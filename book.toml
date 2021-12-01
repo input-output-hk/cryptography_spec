@@ -1,0 +1,5 @@
+[book]
+authors = ["iquerejeta"]
+multilingual = false
+src = "src"
+title = "iohk_primitives"
