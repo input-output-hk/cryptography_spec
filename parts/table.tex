@@ -4,20 +4,20 @@
 \thispagestyle{empty}
 \renewcommand{\arraystretch}{1.5}
 \section*{Table of primitives}
-\begin{longtable}[c]{| c | p{8cm} | c | c | c | c | p{4cm} | c | c |}
+\begin{longtable}[c]{ c  p{7cm}  c  c  c  c  p{3cm}  c  c }
 \caption{This table presents a list of the different cryptographic primitives that are being used in IOHK, or primitives that are being worked on. We divide the status in four groups: \InProduction, \Testing, \Developing, \Deprecated, to represent primitives used in production, being tested or audited, being under development, or deprecated respectively.\label{table:crypto-primitives}}\\
 
  \hline
- \multicolumn{8}{| c |}{List of cryptographic primitives}\\
+ \multicolumn{9}{ c }{List of cryptographic primitives}\\
  \hline
- Name & \centering Protocol & Language & Tech. Details & Project & Status & Provider & Internal contact \\ 
+ Name & \centering Protocol & Language & Tech. Details & Project & Status & Provider & Internal Contact & Plutus support\\ 
  \hline
  \endfirsthead
 
  \hline
- \multicolumn{8}{|c|}{Continuation of Table \ref{table:crypto-primitives}}\\
+ \multicolumn{9}{c}{Continuation of Table \ref{table:crypto-primitives}}\\
  \hline
-Name & \centering Protocol & Language & Tech. Details & Project & Status & Provider & Contact (slack) \\
+Name & \centering Protocol & Language & Tech. Details & Project & Status & Provider & Internal Contact & Plutus support \\
  \hline
  \endhead
 
@@ -25,33 +25,39 @@ Name & \centering Protocol & Language & Tech. Details & Project & Status & Provi
  \endfoot
 
  \hline
- \multicolumn{8}{| c |}{}\\%End of Table}\\
+ \multicolumn{9}{ c }{}\\%End of Table}\\
  \hline\hline
  \endlastfoot
  
-ed25519 & EdDSA implemented over Curve25519. & \href{https://github.com/jedisct1/libsodium/tree/master/src/libsodium/crypto_sign/ed25519}{C} & Section~\ref{sec:ed25519} & Cardano node & \InProduction & libsodium & @Inigo\\
+ed25519 & EdDSA implemented over Curve25519. & \href{https://github.com/jedisct1/libsodium/tree/master/src/libsodium/crypto_sign/ed25519}{C} & Section~\ref{sec:ed25519} & Cardano node & \InProduction & libsodium & & Yes\\
 %
+\hdashline
 %
-KES & Key Evolving Signatures. Implemented on top of a digital signature scheme, in particular ed25519. Haskell implementation depends on libsodium. & \href{https://github.com/input-output-hk/cardano-base/tree/master/cardano-crypto-class/src/Cardano/Crypto/KES}{Haskell}  & Section~\ref{sec:kes} & Cardano node & \InProduction & IOHK (based on libsodium) &  @Inigo \\
+KES & Key Evolving Signatures. Implemented on top of a digital signature scheme, in particular ed25519. Haskell implementation depends on libsodium. & \href{https://github.com/input-output-hk/cardano-base/tree/master/cardano-crypto-class/src/Cardano/Crypto/KES}{Haskell}  & Section~\ref{sec:kes} & Cardano node & \InProduction & IOHK (based on libsodium) &  & Yes \\
 % 
-& & \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/sumed25519}{Rust} & & Jormungandr & \InProduction  & IOHK & \\
+& & \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/sumed25519}{Rust} & & Jormungandr & \InProduction  & IOHK & & \\
 %
+\hdashline
 %
-MuSig2 & Schnorr-based Multi Signatures. In particular, this implementation is compatible with ed25519 signatures. & \href{https://github.com/input-output-hk/musig2}{C} & Section~\ref{sec:musig2} & Hydra & \Developing & IOHK (based on libsodium) & @Inigo \\
+MuSig2 & Schnorr-based multi signatures. In particular, this implementation is compatible with ed25519 signatures. & \href{https://github.com/input-output-hk/musig2}{C} & Section~\ref{sec:musig2} & Hydra & \Developing & IOHK (based on libsodium) & & Yes\\
 %
+\hdashline
 %
-STM & Stake-based Threshold Multi Signatures. This construction depends on a pairing friendly curve. & \href{https://github.com/input-output-hk/mithril}{Rust} & Section~\ref{sec:stm} & Mithril & \Developing & IOHK/Galois & @Inigo, @Markulf \\ 
+STM & Stake-based Threshold Multi signatures. This construction depends on a pairing friendly curve. & \href{https://github.com/input-output-hk/mithril}{Rust} & Section~\ref{sec:stm} & Mithril & \Developing & IOHK/Galois & & No \\ 
 %
+\hdashline
 %
-ATM & Ad-hoc Threshold Signatures. Achieves the same goal as Threshold Signatures, with the difference that the key generation does not require a distributed procedure. Each party generates their key pair, and then a global public key is computed. & \href{https://github.com/input-output-hk/mithril}{Rust} & Section~\ref{sec:atm} & Side chains & \Developing & IOHK/Galois & @Inigo, @Markulf \\ 
+ATM & Ad-hoc Threshold Multi signatures. Achieves the same goal as Threshold Signatures, with the difference that the key generation does not require a distributed procedure. Each party generates their key pair, and then a global public key is computed. & \href{https://github.com/input-output-hk/mithril}{Rust} & Section~\ref{sec:atm} & Side chains & \Developing & IOHK/Galois & & No\\ 
 %
+\hdashline
 %
- VRF & Verifiable Random Function, implemented over Curve25519. & \href{https://github.com/input-output-hk/libsodium/tree/draft-irtf-cfrg-vrf-03/src/libsodium/crypto_vrf}{C} & Section~\ref{sec:vrf} & Cardano node & \InProduction & IOHK & @Inigo \\
+ VRF & Verifiable Random Function, implemented over Curve25519. & \href{https://github.com/input-output-hk/libsodium/tree/draft-irtf-cfrg-vrf-03/src/libsodium/crypto_vrf}{C} & Section~\ref{sec:vrf} & Cardano node & \InProduction & IOHK & & -\\
  %
-& & \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/vrf}{Rust} & & Jormungandr & \InProduction & IOHK & - \\
+& & \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/vrf}{Rust} & & Jormungandr & \InProduction & IOHK &  \\
 %
+\hdashline
 %
-Plonk & zk-SNARK. No generic computation available yet, restricted to the gadgets implemented. & \href{https://github.com/rust-zkp/ark-plonk}{Rust} & Section~\ref{sec:plonk} & Midnight & \Developing & IOHK & @CPerezz @Markulf
+Plonk & zk-SNARK. No generic computation available yet, restricted to the gadgets implemented. & \href{https://github.com/rust-zkp/ark-plonk}{Rust} & Section~\ref{sec:plonk} & Midnight & \Developing & IOHK & & No
  \end{longtable}
 \end{landscape}
 \restoregeometry
