@@ -29,7 +29,21 @@ This section presents the generalized signature system EdDSA, and in Section~\re
 
 \subsection{Parameters of instantiation}
 \label{sec:parameters}
-\textit{This section covers the details of the primitive. It should cover all that is required for an external observer to implement a compatible version without needing to look into the code. This should cover, the curve parameters, hashing algorithms, format, serialisation/deserialisation mechanisms, etc.}
+In this section we set to describe the concrete instantiation of the algorithm presented above. Not only we describe the Curves and Hash functions used, but we also specify how deserialization happens, as this results in important differences of the acceptance criteria of valid signatures. The algorithm we use is Ed25519~\cite{CHES:BDLSY11}. However, our implementation slightly differs in the deserialization criteria. The details are as follows:
+\begin{description}
+\item[Parameter $b$:] We set $b=256$
+\item[Curve:] We define the curve, and by consequence the finite prime order field, security parameter, cofactor, prime order subgroup and generator, as described in~\cite{CHES:BDLSY11}. In particular, we use Edwards25519 which is birationally equivalent to Curve25519~\cite{PKC:Bernstein06}. 
+\item[Hash:] As a hashing algorithm we use SHA512~\cite{FIPS1802}.
+\item[Deserialization:] A signature is represented by 64 bytes: the first 32 bytes, $b_{[..32]}$, represent the point $R$, and the final 32 bytes, $b_{[32..]}$, represent the scalar $S$. A public key is also represented as 32 bytes, $b_{pk}$. Deserialization is valid only if:
+\begin{itemize}
+\item $b_{[32..]}$, read as a little-endian integer, is smaller than $\order$. 
+\item $b_{[..32]}$ does not represent a low order point (by checking against a precomputed blacklist of size $\cofvar$. 
+\item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
+\end{itemize}
+\end{description}
+
+
 
 \subsection{External links}
-\textit{Links of interest, such as papers, gdocs, jira pages, etc.}
+We currently rely in the implementation available in version \href{https://github.com/jedisct1/libsodium/tree/1.0.18/src/libsodium/crypto_sign/ed25519/ref10}{1.0.18 of libsodium}. For Jormungandr we use a \href{https://docs.rs/cryptoxide/latest/cryptoxide/ed25519/index.html}{Rust implementation}. However, note that this implementation does not check if $b_{[..32]}$ has low order, or if $b_{pk}$ is canonical. This means that the verification criteria for Jormungander is currently different to that of Cardano.
+\printbibliography[heading=subbibintoc]
