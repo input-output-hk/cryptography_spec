@@ -1,4 +1,7 @@
 *.log
 *.pdf
 *.toc
-book
+*.lof
+*.toc
+*.bib
+*.run.xml
