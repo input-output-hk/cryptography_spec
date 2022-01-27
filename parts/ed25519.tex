@@ -47,4 +47,3 @@ In this section we set to describe the concrete instantiation of the algorithm p
 
 \subsection{External links}
 We currently rely in the implementation available in version \href{https://github.com/jedisct1/libsodium/tree/1.0.18/src/libsodium/crypto_sign/ed25519/ref10}{1.0.18 of libsodium}. For Jormungandr we use a \href{https://docs.rs/cryptoxide/latest/cryptoxide/ed25519/index.html}{Rust implementation}. However, note that this implementation does not check if $b_{[..32]}$ has low order, or if $b_{pk}$ is canonical. This means that the verification criteria for Jormungander is currently different to that of Cardano.
-\printbibliography[heading=subbibintoc]
