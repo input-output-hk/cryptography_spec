@@ -1,5 +1,6 @@
 \section{Verifiable Random Functions}
 \label{sec:vrf}
+
 \subsection{Summary}
 \newcommand{\sk}{sk}
 \newcommand{\vrf}{\texttt{VRF}\xspace}
@@ -22,6 +23,7 @@ that the value is computed as expected. The VRF specification has changed
 overtime in Cardano, and the nodes use a different algorith, pre-Babbage and
 post-Babbage (if there exists a reference to the HF, we should point it out).
 We expose both specifications, and the motivations for such a change.
+
 \subsection{Generalised specification}
 We use an additional hash function to that introduced in Section~\ref{sec:notation}. In particular
 one that maps a binary input to an element of the group $\group$, $\hash_{s2c}: \{0,1\}^* \to \group$.
@@ -29,57 +31,119 @@ one that maps a binary input to an element of the group $\group$, $\hash_{s2c}: 
 \subsubsection{Pre Babbage}
 A \vrf function, in pre-Babbage eras, is defined by the following three algorithms:
 \begin{itemize}
-\item $\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in Ed25519, see Section~\ref{sec:ed25519}. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key $\signingkey$ in the Ed25519 section as $\vrfsk$.
-\item $\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message $m$, and returns the \vrf randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as defined in procedure $\sign$ from Section~\ref{sec:ed25519}. Let $c \gets \hash(H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)[..128]$. Compute $s \gets (r + c\cdot\vrfsk)\mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, c, s)$ and the randomness $\vrfoutput \gets \hash(\texttt{suite\_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$.
-\item $\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof $\vrfproof$, and returns $\vrfoutput$ or \false. It parses the proof as $(\Gamma, c, s) = \vrfproof$, and computes $H\gets\hash_{s2c}(\vrfvk, m)$. Let $U \gets s\cdot\generator - c\cdot\vrfvk$ and $V \gets s\cdot H - c\cdot\Gamma$. Compute the challenge $c'\gets\hash(H\parallelsep\Gamma\parallelsep U\parallelsep V)[..128]$. If $c'=c$, then return $\vrfoutput \gets  \hash(\texttt{suite\_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return \false.
+    \item $\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in Ed25519,
+    see Section~\ref{sec:ed25519}. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key
+    $\signingkey$ in the Ed25519 section as $\vrfsk$.
+    \item $\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message
+    $m$, and returns the \vrf randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to
+    derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as
+    defined in procedure $\sign$ from Section~\ref{sec:ed25519}. Let $c \gets \hash
+    (H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)[..128]$. Compute $s \gets (r +
+    c\cdot\vrfsk)\mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, c, s)$ and the randomness
+    $\vrfoutput \gets \hash(\texttt{suite\_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep
+    0x00)$.
+    \item $\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof
+    $\vrfproof$, and returns $\vrfoutput$ or \false. It parses the proof as $(\Gamma, c, s) = \vrfproof$, and
+    computes $H\gets\hash_{s2c}(\vrfvk, m)$. Let $U \gets s\cdot\generator - c\cdot\vrfvk$ and $V \gets s\cdot
+    H - c\cdot\Gamma$. Compute the challenge $c'\gets\hash(H\parallelsep\Gamma\parallelsep U\parallelsep V)[..128]$.
+    If $c'=c$, then return $\vrfoutput \gets  \hash(\texttt{suite\_string}\parallelsep
+    0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return \false.
 \end{itemize}
+
 \subsubsection{Post Babbage}
 A \vrf function, in post-Babbage eras, is defined by the following three algorithms:
 \begin{itemize}
-\item $\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in Ed25519, see Section~\ref{sec:ed25519}. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key $\signingkey$ in the Ed25519 section as $\vrfsk$.
-\item $\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message $m$, and returns the \vrf randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as defined in procedure $\sign$ from Section~\ref{sec:ed25519}. Let $c \gets \hash(H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)$. Compute $s \gets (r + c\cdot\vrfsk)\mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, k\cdot\generator, k\cdot H, s)$ and the randomness $\vrfoutput \gets  \hash(\texttt{suite\_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$.
-\item $\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof $\vrfproof$, and returns $\vrfoutput$ or \false. It parses the proof as $(\Gamma, U, V, s) = \vrfproof$, and computes $H\gets\hash_{s2c}(\vrfvk, m)$. Next, compute $c \gets \hash(H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)[..128]$. Finally, if $U = s\cdot\generator - c\cdot\vrfvk$ and $V = s\cdot H - c\cdot\Gamma$, then return $\vrfoutput =  \hash(\texttt{suite\_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return \false.
+    \item $\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in Ed25519,
+    see Section~\ref{sec:ed25519}. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key
+    $\signingkey$ in the Ed25519 section as $\vrfsk$.
+    \item $\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message
+    $m$, and returns the \vrf randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to
+    derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as
+    defined in procedure $\sign$ from Section~\ref{sec:ed25519}. Let $c \gets \hash
+    (H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)$. Compute $s \gets (r + c\cdot\vrfsk)
+    \mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, k\cdot\generator, k\cdot H, s)$ and the
+    randomness $\vrfoutput \gets  \hash(\texttt{suite\_string}\parallelsep
+    0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$.
+    \item $\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof
+    $\vrfproof$, and returns $\vrfoutput$ or \false. It parses the proof as $(\Gamma, U, V, s) = \vrfproof$,
+    and computes $H\gets\hash_{s2c}(\vrfvk, m)$. Next, compute $c \gets \hash(H\parallelsep\Gamma\parallelsep
+    k\cdot\generator\parallelsep k\cdot H)[..128]$. Finally, if $U = s\cdot\generator - c\cdot\vrfvk$ and $V = s\cdot
+    H - c\cdot\Gamma$, then return $\vrfoutput =  \hash(\texttt{suite\_string}\parallelsep
+    0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return \false.
 \end{itemize}
 
-This change allows for batch verification of proofs, which achieve up to a times two improvement in verification time, in exchange of a larger proof.
+This change allows for batch verification of proofs, which achieve up to a times two improvement in verification
+time, in exchange of a larger proof.
+
 \subsection{Parameters of instantiation}
-Some of the concrete parameter instantiations also differ between pre-Babbage and post-Babbage eras. We begin by describing those which coincide, and follow with a separate description for the ones that differ.
+Some of the concrete parameter instantiations also differ between pre-Babbage and post-Babbage eras. We begin by
+describing those which coincide, and follow with a separate description for the ones that differ.
 \begin{description}
-\item[Parameter $\ell(\kappa)$ and suite $\texttt{suite\_string}$:] We set $\ell(\kappa)=512$. We choose the suite \texttt{ECVRF\_EDWARDS25519\_SHA512\_ELL2}, as defined in the standard draft~\cite{vrfdraft10}. This sets the parameter $\texttt{suite\_string}$ as $0x04$ and the following parameters.
-\item[Curve:] We define the curve, and by consequence the finite prime order field, security parameter, cofactor, prime order subgroup and generator, as described in~\cite{CHES:BDLSY11}. In particular, we use Edwards25519 which is birationally equivalent to Curve25519~\cite{PKC:Bernstein06}.
-\item[Hash:] As a hashing algorithm we use SHA512~\cite{FIPS1802}.
+    \item[Parameter $\ell(\kappa)$ and suite $\texttt{suite\_string}$:] We set $\ell(\kappa)=512$. We choose the
+    suite \texttt{ECVRF\_EDWARDS25519\_SHA512\_ELL2}, as defined in the standard draft~\cite{vrfdraft10}. This
+    sets the parameter $\texttt{suite\_string}$ as $0x04$ and the following parameters.
+    \item[Curve:] We define the curve, and by consequence the finite prime order field, security parameter, cofactor,
+    prime order subgroup and generator, as described in~\cite{CHES:BDLSY11}. In particular, we use Edwards25519
+    which is birationally equivalent to Curve25519~\cite{PKC:Bernstein06}.
+    \item[Hash:] As a hashing algorithm we use SHA512~\cite{FIPS1802}.
 \end{description}
 
 \subsubsection{Pre Babbage}
 We proceed with the specifications on pre-Babbage eras.
 \begin{description}
-\item[Draft version:] pre-Babbage eras are build on top of Version 03 of the standards draft~\cite{vrfdraft03}.
-\item[Deserialization:] A \vrf proof is represented by 80 bytes: the first 32 bytes, $b_{[..32]}$, represent the point $\Gamma$, the following 16 bytes, $b_{[32..48]}$, represent the scalar $c$, and the final 32 bytes, $b_{[48..]}$, represent the scalar $s$. A public key is also represented as 32 bytes, $b_{pk}$. Deserialization is valid only if:
-\begin{itemize}
-\item $b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.
-\item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
-\end{itemize}
-\item[Hash to curve $\hash_{s2c}$:] \sloppy Elligator mapping, over a scalar computed by
-hashing $\texttt{suite\_string}\parallelsep 0x01\parallelsep \vrfvk \parallelsep m$. The 
-mechanism is described in \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-03#section-5.4.1.2}{Section~5.4.1.2} of version 3 of the draft~\cite{vrfdraft03}. Note that for 
-implementing the mechanism as described in the draft, the sign bit is cleared before calling
-the elligator function, meaning that the latter always works with sign = 0 (see \href{https://github.com/input-output-hk/libsodium/blob/tdammers/rebased-vrf/src/libsodium/crypto_vrf/ietfdraft03/convert.c#L84}{\texttt{\_vrf\_ietfdraft03\_hash\_to\_curve\_elligator2\_25519}}
-function). See \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-03#appendix-A.4}{Appendix A.4} of version 3 of the draft for test vectors. 
+    \item[Draft version:] pre-Babbage eras are build on top of Version 03 of the standards draft~\cite{vrfdraft03}.
+    \item[Deserialization:] A \vrf proof is represented by 80 bytes: the first 32 bytes, $b_{[..32]}$, represent the
+    point $\Gamma$, the following 16 bytes, $b_{[32..48]}$, represent the scalar $c$, and the final 32 bytes,
+    $b_{[48..]}$, represent the scalar $s$. A public key is also represented as 32 bytes, $b_{pk}$.
+    Deserialization is valid only if:
+    \begin{itemize}
+        \item $b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.
+        \item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
+        $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
+    \end{itemize}
+    \item[Hash to curve $\hash_{s2c}$:] \sloppy Elligator mapping, over a scalar computed by
+    hashing $\texttt{suite\_string}\parallelsep 0x01\parallelsep \vrfvk \parallelsep m$. The
+    mechanism is described in
+    \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-03#section-5.4.1.2}{Section~5.4.1.2}
+    of version 3 of the draft~\cite{vrfdraft03}. Note that for
+    implementing the mechanism as described in the draft, the sign bit is cleared before calling
+    the elligator function, meaning that the latter always works with sign = 0 (see \href{https://github
+.com/input-output-hk/libsodium/blob/tdammers/rebased-vrf/src/libsodium/crypto_vrf/ietfdraft03/convert
+.c#L84}{\texttt{\_vrf\_ietfdraft03\_hash\_to\_curve\_elligator2\_25519}}
+    function). See \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-03#appendix-A.4}{Appendix A.4} of
+    version 3 of the draft for test vectors.
 \end{description}
 
 \subsubsection{Post Babbage}
 We finalize with the specifications of post-Babbage eras.
 \begin{description}
-\item[Draft version:] post-Babbage eras are build on top of a batch-compatible version of  Version 10 of the standards draft~\cite{vrfdraft10}. The specific construction is described in 
-the technical spec studying the security of batch compatibility~\cite{batchspec}.
-\item[Deserialization:] A \vrf proof is represented by 128 bytes: the first 32 bytes, $b_{[..32]}$, represent the point $\Gamma$, the following 32 bytes, $b_{[32..64]}$, represent the point $U$, the following 32 bytes, $b_{[64..96]}$, represent the point $V$, and the final 32 bytes, $b_{[96..]}$, represent the scalar $s$. A public key is also represented as 32 bytes, $b_{pk}$. Deserialization is valid only if:
-\begin{itemize}
-\item $b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.
-\item $b_{[96..]}$ when read as a little-endian integer, is smaller than $\order$.
-\item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
-\end{itemize}
-\item[Hash to curve $\hash_{s2c}$:] Hash to curve algorithm 
-as defined in the hash to curve standard~\cite{h2cdraft13}, version 12, \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hash-to-curve-12#section-6.8.2}{Section 6.8.2} (non uniform version). For test vectors, one can use those presented in \href{https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hash-to-curve-13#appendix-J.5.2}{Appendix J.5.2} of that same document. Reference implementation as called in the \href{https://github.com/input-output-hk/libsodium/blob/iquerejeta/ECVRF-EDWARDS25519-SHA512-TAI/src/libsodium/crypto_vrf/ietfdraft10/convert.c#L88}{libsodium fork}.
+    \item[Draft version:] post-Babbage eras are build on top of a batch-compatible version of Version 10 of the
+    standards draft~\cite{vrfdraft10}. The specific construction is described in
+    the technical spec studying the security of batch compatibility~\cite{batchspec}.
+    \item[Deserialization:] A \vrf proof is represented by 128 bytes: the first 32 bytes, $b_{[..32]}$, represent the
+    point $\Gamma$, the following 32 bytes, $b_{[32..64]}$, represent the point $U$, the following 32 bytes,
+    $b_{[64..96]}$, represent the point $V$, and the final 32 bytes, $b_{[96..]}$, represent the scalar $s$. A
+    public key is also represented as 32 bytes, $b_{pk}$. Deserialization is valid only if:
+    \begin{itemize}
+        \item $b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.
+        \item $b_{[96..]}$ when read as a little-endian integer, is smaller than $\order$.
+        \item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
+        $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
+    \end{itemize}
+    \item[Hash to curve $\hash_{s2c}$:] Hash to curve algorithm
+    as defined in the hash to curve standard~\cite{h2cdraft13}, version 12, \href{https://datatracker.ietf
+.org/doc/html/draft-irtf-cfrg-hash-to-curve-12#section-6.8.2}{Section 6.8.2} (non uniform version). For test
+    vectors, one can use those presented in \href{https://datatracker.ietf
+.org/doc/html/draft-irtf-cfrg-hash-to-curve-13#appendix-J.5.2}{Appendix J.5.2} of that same document. Reference
+    implementation as called in the \href{https://github
+.com/input-output-hk/libsodium/blob/iquerejeta/ECVRF-EDWARDS25519-SHA512-TAI/src/libsodium/crypto_vrf
+/ietfdraft10/convert.c#L88}{libsodium fork}.
 \end{description}
+
 \subsection{External links}
-We currently rely in the implementation available in the \href{https://github.com/input-output-hk/libsodium/tree/iquerejeta/ECVRF-EDWARDS25519-SHA512-TAI/src/libsodium/crypto_vrf}{fork of libsodium}. For Jormungandr we use a \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/vrf}{Rust implementation}. However, note that this implementation is not compatible with that of mainnet. We are actively working in a \href{https://github.com/input-output-hk/vrf}{compatible version} in Rust. However, we rely on the merge of a \href{https://github.com/dalek-cryptography/curve25519-dalek/pull/377}{PR} which has been inactive for a while. 
+We currently rely in the implementation available in the \href{https://github
+.com/input-output-hk/libsodium/tree/iquerejeta/ECVRF-EDWARDS25519-SHA512-TAI/src/libsodium/crypto_vrf}{fork of
+libsodium}. For Jormungandr we use a \href{https://github
+.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/vrf}{Rust implementation}. However, note that
+this implementation is not compatible with that of mainnet. We are actively working in a \href{https://github
+.com/input-output-hk/vrf}{compatible version} in Rust. However, we rely on the merge of a \href{https://github.com/dalek-cryptography/curve25519-dalek/pull/377}{PR} which has been inactive for a while.
