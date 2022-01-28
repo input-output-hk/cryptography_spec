@@ -1,2 +1,77 @@
 \section{Key Evolving Signatures}
 \label{sec:kes}
+\subsection{Summary}
+In Cardano, nodes use Key Evolving Signatures (KES).
+This is another asymmetric key cryptographic scheme, also relying on
+the use of public and private key pairs.
+These signature schemes provide forward cryptographic security, meaning that a
+compromised key does not make it easier for an adversary to forge a signature that
+allegedly had been signed in the past.
+
+In KES, the public verification key stays constant, but the
+corresponding private key evolves incrementally. For this reason, KES
+signing keys are indexed by integers representing the step in the key's
+evolution. Since the private key evolves incrementally in a KES scheme, the ledger rules
+require the pool operators to evolve their keys every time a certain number of
+slots have passed. The details of when these keys are evolved are out of the 
+scope of this document, and the reader is directed to the ledger spec~\cite{ledgerspec}.
+In this section, we describe the detailed cryptographic construction used. 
+\subsection{Generalised specification}
+\newcommand{\update}{\texttt{Update}}
+\newcommand{\pkeygen}{P\keygen}
+\newcommand{\skeygen}{S\keygen}
+\newcommand{\prf}{F}
+\newcommand{\seed}{r}
+\newcommand{\accept}{\texttt{true}}
+\newcommand{\reject}{\texttt{false}}
+We use the iterated sum construction from Section 4.3 of \cite{cryptoeprint:2001:034}.
+A KES signature algorithm is parametrized by four algorithms, $\keygen, \sign, \update$ and $\verify$. The sum construction depends on two signing algorithms, $\Sigma_0 = (\keygen_0, \sign_0, \allowbreak\update_0, \verify_0)$ and $\Sigma_1 = (\keygen_1, \sign_1, \update_1, \verify_1)$, which are forward-secure with $T_0$ and $T_1$ time periods respectively. As specified in the paper, and digital signature algorithm can be considered as a forward-secure signature algorithm with 1 time period. In particular, for Cardano, we use Ed25519 (see Section~\ref{sec:ed25519}) as a base signature scheme. Also, we use two specialized versions of the key generation, one to generate the public
+part, and another to generate the secret part, $\pkeygen, \skeygen$ respectively. In Cardano, 
+these functions simply call on $\keygen$ and extract the public or private part. The KES algorithm
+uses a length doubling pseudorandom generator, $\prf:\{0,1\}^{\secparam}\rightarrow\{0,1\}^{\secparam}\times\{0,1\}^{\secparam}$, where given a random seed, $s$, returns two random seeds of the same size $s_1, s_2$. The sum construction begins by generating a signing algorithm with two periods by merging two instances of the base signature (Ed25519), and proceeds recursively until the desired level of periods is reached. 
+\begin{itemize}
+\item $\keygen(\seed)$ takes as input a random seed. It then extends the seed into two parts, 
+$(\seed_0, \seed_1)\gets\prf(\seed)$, and uses each seed to generate the key material of the next layer. In particular $(\signingkey_0, \vk_0)\gets\keygen(\seed_0)$ and $\vk_1\gets\pkeygen(\seed_1)$. Finally, it computes the pair's public key $\vk\gets\hash(\vk_0, \vk_1)$ and returns $(\langle\signingkey_0, \seed_1, \vk_0, \vk_1\rangle, \vk)$.
+\item $\sign(t, \overbrace{\langle\signingkey', \seed_1, \vk_0, \vk_1}^{\signingkey}\rangle, m)$
+takes as input a time period $t$, a signing key $\signingkey$ and a message. If $t<T_0$, then it computes the signature using the first signature algorithm, $\sigma'\gets\sign_0(t, \signingkey', m)$, otherwise it uses the other $\sigma'\gets\sign_1(t - T_0, \signingkey', m)$. Finally, returns $(\langle\sigma', \vk _0, \vk_1\rangle, t)$. 
+\item $\update(t, \overbrace{\langle, \signingkey', \seed_1, \vk_0, \vk_1\rangle}^{\signingkey})$ takes as input a time period $t$, and a signing key $\signingkey$. If $t+1<T_0$, then $\signingkey'\gets\update_0(t, \signingkey')$. Otherwise, it checks if its changing the key 
+generation algorithm. Specifically, if $t+1=T_0$, then $\signingkey'\gets\skeygen_1(\seed_1)$ and sets the seed to zero $\seed_1\gets 0$. Otherwise, $\signingkey'\gets\update_1(t-T_0, \signingkey')$. 
+\item $\verify(\vk, m, \overbrace{\langle\sigma', \vk_0, \vk_1\rangle}^{\sigma},  t)$ takes as input
+a verification key, $\vk$, a message, $m$, a signature, $\sigma$, and a time period, $t$. First, it 
+checks that $\hash(\vk_0, \vk_1) = \vk$. If that is not the case, it returns $\reject$. Otherwise, if $t<T_0$ then $\verify_0(\vk_0, m, \sigma, t)$, else $\verify_1(\vk_1, m, \sigma, t-T_0)$. If verification fails, it returns $\reject$, otherwise it returns $\accept$. 
+\end{itemize}
+
+\subsection{Parameters of instantiation}
+We now describe the specific instantiation of KES algorithm by the Cardano node. As with the VRF (see Section~\ref{sec:vrf}), the Babbage hard fork brought optimizations to the KES signature size, and we therefore have different verification criteria pre and post-Babbage. Both instances use
+a tree of depth 6. For ease of exposure, we compare both constructions using a simple binary tree
+of depth 3. The only relevant details on how KES algorithm works is signature generation and signature verification. The details on how the keys are managed are details of implementation 
+which will not be covered here. 
+\begin{figure}
+\center
+\begin{forest}
+important/.style={draw={red,thick}}
+[
+	A, s sep=3mm, for tree=draw
+		[B, fill=green, for tree={outer sep=3pt}
+			[D, fill=green[H, important=left, fill=green[t=0,tier=word]][I, important=left, fill=green]]
+			[E,fill=green, important=left[J][K]]
+		]
+		[C,fill=green,important=left, for tree={outer sep=3pt}
+			[F[L][M]]
+			[G[N][O]]
+		]
+]
+{(left.north east)}{(right.north west)}{(.north)+(0,3mm)}{above}
+\end{forest}
+\caption{Binary tree of depth 4. For the examples described below, we set the period to zero, $t=0$. In green, we have the nodes for which we need to store the public key in a signature during pre-babbage eras. With red borders we have the nodes for which we need to store the public keys in post-babbage eras.}
+\end{figure}
+\newcommand{\nodename}[1]{\fbox{#1}}
+\subsubsection{Pre-Babbage}
+The signing instances of nodes h-o are Ed25519 instances, and nodes a-g are defined by recursively calling on the algorithms presented above. 
+In pre-babbage eras the signatures are computed in a naive manner, meaning 
+that a signature is represented as the underlying signature and the two public keys, $\sigma = (\sigma', \vk_0, \vk_1)$. So for instance, the signature in node a of period 0 contains the signature of node \nodename{B}, $\sigma_b$, the public key of node \nodename{B} $\vk_b$ (which is a hash of $\vk_d$ and $\vk_e$) and the public key of node \nodename{C} $\vk_c$ (which is a hash of $\vk_f$ and $\vk_g$). Signature $\sigma_b$ in turn contains signature of node \nodename{D} $\sigma_d$, the public key of node \nodename{D} $\vk_d$ (which is a hash of $\vk_h$ and $\vk_i$) and public key of node \nodename{E} $\vk_e$ (which is a hash of $\vk_j$ and $\vk_k$). The signature of node \nodename{D}, $\sigma_d$ contains in turn the Ed25519 signature of node \nodename{H}, $\sigma_h$, the public key of node \nodename{H}, $\vk_h$ and the public key of node \nodename{I} $\vk_i$. Verification of the signature works in the naive recursive manner. We check that $\hash(\vk_b, \vk_c) = \vk_a$, and $\hash(\vk_d, \vk_e) = \vk_b$, and $\hash(\vk_h, \vk_i) = \vk_d$, and finally that $\verify(m, \vk_h, \sigma_d) = \accept$.
+\subsubsection{Post-Babbage}
+However, this naive definition of the signature results in poor performance with respect to the signature size. We don't need to verify the hash equality at each level, and we simply need to do so at the root. In the Babbage hardfork we introduced such an optimization. In particular, instead of storing both public keys in each signature, we only store the one of the branch that we are not. Again, assume we are in period 0. Then, the signature in node a of period 0 contains the signature of node \nodename{B}, $\sigma_b$, and the public key of node \nodename{C} $\vk_c$ (which is a hash of $\vk_f$ and $\vk_g$). Signature $\sigma_b$ in turn contains signature of node \nodename{D} $\sigma_d$ and public key of node \nodename{E} $\vk_e$ (which is a hash of $\vk_j$ and $\vk_k$). The signature of node \nodename{D}, $\sigma_d$ contains in turn the Ed25519 signature of node \nodename{H}, $\sigma_h$, the public key of node \nodename{H}, $\vk_h$ and the public key of node \nodename{I} $\vk_i$. Verification of the signature works going up the tree, rather than down. We check $\verify(m, \vk_h, \sigma_d) = \accept$. Then we compute the expected key of node \nodename{D}, $\vk_d'\gets\hash(\vk_h, \vk_i)$. Then we use that to compute the expected key of node \nodename{B}, $\vk_b'\gets\hash(\vk_d', vk_e)$. Finally, we check that the leaf indeed is part of the merkle tree by checking that $\hash(\vk_b', \vk_c) = \vk_a$.
+\subsection{External links}
+We currently rely in the implementation available in the \href{https://github.com/input-output-hk/cardano-base/tree/master/cardano-crypto-class/src/Cardano/Crypto/KES}{cardano base}. As a layer 0 primitive, it uses Ed25519 (see Section~\ref{sec:ed25519}). For Jormungandr we use a \href{https://github.com/input-output-hk/chain-libs/tree/master/chain-crypto/src/algorithms/sumed25519}{Rust implementation}. However, note that this implementation is not compatible with that of mainnet. We are actively working in a \href{https://github.com/input-output-hk/kes-mmm-sumed25519/tree/crate_review}{compatible version} in Rust. 
+
