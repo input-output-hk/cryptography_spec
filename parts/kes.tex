@@ -133,7 +133,7 @@ expected key of node \nodename{D}, $\vk_d'\gets\hash(\vk_h, \vk_i)$. Then we use
 \nodename{B}, $\vk_b'\gets\hash(\vk_d', vk_e)$. Finally, we check that the leaf indeed is part of the merkle tree by
 checking that $\hash(\vk_b', \vk_c) = \vk_a$. To derive the missing public key, we introduce a new function, $\derive$.
 
-Specifically, let post-babbage KES signature algorithms modify the $\sign$ and $\verify$ algorithms, and introduces
+Specifically, post-babbage KES signature algorithm modifies the $\sign$ and $\verify$ algorithms, and introduces
 $\derive$ as follows:
 \begin{itemize}
     \item $\keygen(\seed)$ takes as input a random seed. It then extends the seed into two parts,
@@ -173,7 +173,9 @@ return $(\hash(\vk, \vk_c), res)$, else return $(\hash(\vk_c, \vk), res)$.
 The instantiation of both eras is the same. The underlying signature scheme is Ed25519 (see Section~\ref{sec:ed25519}).
 Regarding \pkeygen and \skeygen, in Cardano,
 these functions simply call a seeded version of Ed25519's $\keygen$ and extract the public or private part. As a hashing
-function we use Blake2b~\cite{blake2b}.
+function we use Blake2b~\cite{blake2b}. Defining the pseudo random function $\prf$ is not required for compatibility
+purposes, as it is only used for private key material. However, for sake of completeness, we specify that the cardano
+node uses Blake2b as a length doubling pseudorandom generator.
 \subsection{External links}
 We currently rely in the implementation available in the \href{https://github
 .com/input-output-hk/cardano-base/tree/master/cardano-crypto-class/src/Cardano/Crypto/KES}{cardano base}. As a layer
