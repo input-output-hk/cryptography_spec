@@ -7,6 +7,15 @@
    year = {2002},
 }
 
+@techreport{blake2b,
+	author = {Jean-Philippe Aumasson},
+	title = {The BLAKE2 Cryptographic Hash and Message Authentication Code (MAC)},
+	institution = {Internet Engineering Task Force},
+	type = {Informational},
+	year = {2015},
+	url = {https://datatracker.ietf.org/doc/html/rfc7693},
+}
+
 @techreport{vrfdraft03,
 	number =	{draft-irtf-cfrg-vrf-03},
 	type =		{Internet-Draft},
@@ -17,9 +26,7 @@
         author =	{Sharon Goldberg and Leonid Reyzin and Dimitrios Papadopoulos and Jan Včelák},
 	title =		{{Verifiable Random Functions (VRFs)}},
 	pagetotal =	42,
-	year =		,
-	month =		,
-	day =		,
+	year =		2018,
 	abstract =	{A Verifiable Random Function (VRF) is the public-key version of a keyed cryptographic hash. Only the holder of the private key can compute the hash, but anyone with public key can verify the correctness of the hash. VRFs are useful for preventing enumeration of hash-based data structures. This document specifies several VRF constructions that are secure in the cryptographic random oracle model. One VRF uses RSA and the other VRF uses Eliptic Curves (EC).},
 }
 
@@ -65,9 +72,18 @@
 }
 
 @misc{ledgerspec,
-	author = {Corduan, Jared and Vinogradova, Polina and G\"{u}demann, Matthias,
+	author = {Corduan, Jared and Vinogradova, Polina and G\"{u}demann, Matthias},
 	title = {A Formal Specification of the Cardano Ledger},
 	howpublished = {Deliverable},
 	year = {2019},
 	note = {\url{https://hydra.iohk.io/build/8201171/download/1/ledger-spec.pdf}}
+}
+
+@misc{cryptoeprint:2001:034,
+  title={Composition and Efficiency Tradeoffs for Forward-Secure Digital Signatures},
+  booktitle={IACR Eprint archive},
+  keywords={cryptographic protocols / forward security, digital signatures},
+  url={http://eprint.iacr.org/2001/034},
+  author={Tal Malkin and Daniele Micciancio and Sara Miner},
+  year=2001
 }
