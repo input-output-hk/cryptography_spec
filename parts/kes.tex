@@ -19,15 +19,6 @@ scope of this document, and the reader is directed to the ledger spec~\cite{ledg
 In this section, we describe the detailed cryptographic construction used.
 
 \subsection{Generalised specification}
-\newcommand{\update}{\texttt{Update}}
-\newcommand{\pkeygen}{P\keygen}
-\newcommand{\skeygen}{S\keygen}
-\newcommand{\derive}{\texttt{DeriveVerKey}}
-\newcommand{\prf}{F}
-\newcommand{\seed}{r}
-\newcommand{\accept}{\texttt{true}}
-\newcommand{\reject}{\texttt{false}}
-\newcommand{\nodename}[1]{\fbox{#1}}
 We use the iterated sum construction from Section 4.3 of \cite{cryptoeprint:2001:034}.
 A KES signature algorithm is parametrized by four algorithms, $\keygen, \sign, \update$ and $\verify$. The sum
 construction depends on two signing algorithms, $\Sigma_0 = (\keygen_0, \sign_0, \allowbreak\update_0, \verify_0)$
@@ -41,8 +32,7 @@ uses a length doubling pseudorandom generator, $\prf:\{0,1\}^{\secparam}\rightar
 construction begins by generating a signing algorithm with two periods by merging two instances of the base signature,
 and proceeds recursively until the desired level of periods is reached.
 
-As with the VRF (see
-Section~\ref{sec:vrf}), the Babbage hard fork brought optimizations to the KES signature size, and we therefore have
+The Babbage hard fork brought optimizations to the KES signature size, and we therefore have
 different verification criteria pre and post-Babbage. Both instances use
 a tree of depth 6. For ease of exposure, we compare both constructions using a simple binary tree
 of depth 3 (see Figure~\ref{fig:merkle}). Consider each node as a KES instance with $2^n$ periods, where $n$ is
@@ -69,7 +59,7 @@ details of implementation which will not be covered here.
         ]
             {(left.north east)}{(right.north west)}{(.north)+(0,3mm)}{above}
     \end{forest}
-    \caption{Binary tree of depth 4. For the examples described below, we set the period to zero, $t=0$. In green, we
+    \caption[KES binary tree.]{Binary tree of depth 4. For the examples described below, we set the period to zero, $t=0$. In green, we
     have the nodes for which we need to store the public key in a signature during pre-babbage eras. With red borders
     we have the nodes for which we need to store the public keys in post-babbage eras.}
     \label{fig:merkle}

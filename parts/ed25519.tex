@@ -21,8 +21,8 @@ curve. An EdDSA signature consists of the following three algorithms:
     integer in $\{0,1,\ldots, 2^{2b}-1\}$. Let $R \gets r\cdot\generator$, and $S \gets (r + H(R, A, M)\cdot
     \signingkey) \mod \order$. Return $\signature \gets (R, S)$.
     \item $\verify(m, \vk, \signature)$ takes as input a message $m$, a verification key $\vk$ and a signature
-    $\signature$, and returns $r\in\{true, false\}$ depending on whether the signature is valid or not. The algorithm
-    returns $true$ if the following equation holds and $false$ otherwise:
+    $\signature$, and returns $r\in\{\accept, \reject\}$ depending on whether the signature is valid or not. The algorithm
+    returns $\accept$ if the following equation holds and $\reject$ otherwise:
     \[S\cdot\generator = R + H(R, \vk, m)\cdot \vk.\]
 \end{itemize}
 
@@ -44,9 +44,9 @@ However, our implementation slightly differs in the deserialization criteria. Th
     \begin{itemize}
         \item $b_{[32..]}$, read as a little-endian integer, is smaller than $\order$.
         \item $b_{[..32]}$ does not represent a low order point (by checking against a precomputed blacklist of size
-        $\cofvar$.
+        $\cofvar$).
         \item $b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
-        $\cofvar$, and when read as a little-endian integer, it is smaller than $p$.
+        $\cofvar$), and when read as a little-endian integer, it is smaller than $p$.
     \end{itemize}
 \end{description}
 

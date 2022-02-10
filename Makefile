@@ -26,5 +26,5 @@ bib-main:
 
 clean:
 	rm -rf flatten
-	rm -f diff.{ps,log,aux,out,dvi,bbl,blg,lof,run.xml,toc}
-	rm -f diff-blx.bib
+	rm -f *.{ps,log,aux,out,dvi,bbl,blg,lof,run.xml,toc,fls,fdb_latexmk}
+	rm -f *-blx.bib

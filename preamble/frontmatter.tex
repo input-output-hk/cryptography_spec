@@ -2,6 +2,7 @@
   \tableofcontents%
 
   \listoffigures%
+  \listoftables%
   \clearpage%
 \pagenumbering{arabic}
 \title{A Formal Specification of the cryptographic primitives used in IOHK}
@@ -16,16 +17,19 @@
   This document contains the list of the different cryptographic primitives of interest for IOHK. We
   present in detail the instantitations that are being used/implemented, as well as the parameters
   used in our production systems.
-  A first iteration of this document
+  This document contains a specification of all the cryptographic primitives being used in production,
+  or in testing phase, and at least a reference to the ongoing efforts of other cryptographic primitives.
 
 \end{abstract}
 
 \section*{List of Contributors}
+\label{sec:acknowledgements}
 
 \section*{Including new primitives}
 If a project needs a particular primitive, which is not present in this document, the mechanism 
-to include is simple. Add an issue to the repo, 
+to include is simple. Add a CIP motivating such a request. Details on how to do that can be found
+in \href{https://github.com/cardano-foundation/CIPs/tree/master/CIP-0001}{CIP-0001}. If the request
+is internal and it is desired to keep the request private, add an issue to the repo,
 \url{https://github.com/input-output-hk/cryptography_spec}, specifying why such a 
 primitive is of interest, and how it would be used. To make the discussion more effective, 
-it is also of interest to link references to the specification, or available implementations. 
-\label{acknowledgements}
+it is also of interest to link references to the specification, or available implementations.
