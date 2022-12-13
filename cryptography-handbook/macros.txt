@@ -25,3 +25,17 @@
 \seed:{r}
 \accept:{\texttt{true}}
 \reject:{\texttt{false}}
+
+%% VRF %%
+
+\sk:{sk}
+\vrf:{\texttt{VRF}}
+\vrfsk:{\sk_{\vrf}}
+\vrfvk:{\vk_{\vrf}}
+\vrfoutput:{\beta}
+\vrfproof:{\Pi}
+\vrfkeygen:{\texttt{VrfKeyGen}}
+\vrfgenerateproof:{\texttt{GenerateProof}}
+\parallelsep:{\;||\;}
+\true:{\texttt{true}}
+\false:{\texttt{false}}
