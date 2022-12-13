@@ -1,2 +1,27 @@
-\grad:{\nabla}
-\R:{\mathbb{R}^{#1 \times #2}}
+%% Digital signatures %%
+\keygen:{\texttt{KeyGen}}
+\sign:{\texttt{Sign}}
+\verify:{\texttt{Verify}}
+\secparam:{\lambda}
+\secretkey:{x}
+\signingkey:{sk}
+\vk:{vk}
+\signature:{\sigma}
+
+%% Group %%
+\ec:{E}
+\cofvar:{\texttt{cofvar}}
+\group:{\mathbf{G}}
+\generator:{G}
+\order:{q}
+\hash:{\texttt{H}}
+
+%% KES Functions %%
+\update:{\texttt{Update}}
+\pkeygen:{P\keygen}
+\skeygen:{S\keygen}
+\derive:{\texttt{DeriveVerKey}}
+\prf:{F}
+\seed:{r}
+\accept:{\texttt{true}}
+\reject:{\texttt{false}}

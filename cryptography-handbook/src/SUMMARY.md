@@ -1,6 +1,7 @@
 # Summary
 
 - [Introduction](./0_introduction.md)
+- [Notation](./notation.md)
 
 # Individual Signatures
 
