@@ -1,11 +1,18 @@
 # Summary
 
 - [Introduction](./0_introduction.md)
-- [Notation](./notation.md)
 
-# Individual Signatures
+# Library reference list
+## Individual Signatures
+- [ed25519](./ref-list/ed25519.md)
 
-- [ed25519](./ed25519.md)
+## Verifiable Random Functions
+- [VRF-ed25519](./ref-list/vrf25519.md)
 
-# Verifiable Random Functions
-- [VRF-ed25519](./vrf25519.md)
+# Primitive specification
+- [Notation](./specs/notation.md)
+## Individual Signatures
+- [ed25519](./specs/ed25519.md)
+
+## Verifiable Random Functions
+- [VRF-ed25519](./specs/vrf25519.md)
