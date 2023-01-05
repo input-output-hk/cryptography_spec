@@ -12,3 +12,7 @@ mathjax-support = true
 
 [preprocessor.katex]
 macros = "./macros.txt"
+
+[preprocessor.graphviz]
+command = "mdbook-graphviz"
+output-to-file = false
