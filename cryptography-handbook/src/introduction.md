@@ -1,4 +1,11 @@
 # Introduction
+``` warning
+This document is WORK IN PROGRESS. While the document
+has this warning, check with your local cryptographer
+whether the final solution is correct for your 
+particular use case.
+```
+
 This document forms the IOG Cryptography Handbook, which aims to provide a go-to for engineers having 
 to make a choice on which implementations to use for given cryptographic primitives.
 This document contains a specification of all the cryptographic primitives being used in production,
