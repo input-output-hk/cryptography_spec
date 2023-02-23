@@ -13,6 +13,8 @@ jobs:
           fetch-depth: 0
       - name: Install mdbook-katex
         run: cargo install mdbook-katex
+      - name: Install mdbook-graphviz
+        run: cargo install mdbook-graphviz
       - name: Install mdbook
         run: cargo install mdbook
       - name: Deploy GitHub Pages
