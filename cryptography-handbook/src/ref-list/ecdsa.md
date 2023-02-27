@@ -16,3 +16,7 @@ contexts, is that the signature algorithm (as defined in the standard) is [malle
 Specifically, given a valid signature $(r, s)$, the tuple $(r, -s)$ is also a valid signature.
 To avoid problems resulting from this malleability, the implementation we use [checks that](https://github.com/bitcoin-core/secp256k1/blob/master/src/secp256k1.c#L455) the $$ s < p/2$$, where $p$ is
 the order of the prime order group. More details of such a check in the [spec](./../specs/ecdsa.md) section. 
+
+Another common problem of verifying ECDSA signatures is that the hashing of the message must be performed
+by the verifier itself, rather than accepting a hashed message. This can be [dangerous](https://bitcoin.stackexchange.com/a/81116/35586). 
+Therefore, the verifier, before proceeding with verification, hashes the message.
