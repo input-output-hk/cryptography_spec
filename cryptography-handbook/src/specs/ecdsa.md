@@ -40,6 +40,7 @@ While we follow the verification criteria used in Bitcoin, we do not follow thei
 convention, DER-encoding, which results in variable sized signatures up to 72 bytes (instead 
 of the 64 byte encoding we describe in this document).
 
+More precisely, the following is what is the specification used in the plutus built-in functions:
 * The verification key must correspond to the _(x, y)_ coordinates of a point
   on the SECP256k1 curve, where _x, y_ are unsigned integers in big-endian form.
 * The verification key must correspond to a result produced by
