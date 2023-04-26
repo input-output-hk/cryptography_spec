@@ -19,13 +19,17 @@ jobs:
         uses: baptiste0928/cargo-install@v2
         with:
           crate: mdbook-katex
-      - name: Install mdbook-graphviz
-        uses: baptiste0928/cargo-install@v2
-        with:
-          crate: mdbook-graphviz
-          version: "0.1.5"
       - name: Deploy GitHub Pages
         run: |
           cd cryptography-handbook
-          ls
           mdbook build
+          git worktree add gh-pages
+          git config user.name "Deploy from CI"
+          git config user.email ""
+          cd gh-pages# Delete the ref to avoid keeping history.
+          git update-ref -d refs/heads/gh-pages
+          rm -rf *
+          mv ../book/html/* .
+          git add .
+          git commit -m "Deploy $GITHUB_SHA to gh-pages"
+          git push --force --set-upstream origin gh-pages
