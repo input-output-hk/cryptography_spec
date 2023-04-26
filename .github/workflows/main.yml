@@ -24,6 +24,9 @@ jobs:
           crate: mdbook
       - name: Deploy GitHub Pages
         run: |
-          ls
           cd cryptography-handbook
-          ls
+          mdbook build
+          git worktree add gh-pages
+          git config user.name "Deploy from CI"
+          git config user.email ""
+          cd gh-pages
