@@ -19,7 +19,7 @@ jobs:
         run: cargo install mdbook
       - name: Deploy GitHub Pages
         run: |
-          cd cryptography-handbook
+          ls
           mdbook build
           git worktree add gh-pages
           git config user.name "Deploy from CI"
