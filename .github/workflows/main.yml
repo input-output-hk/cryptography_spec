@@ -25,6 +25,4 @@ jobs:
       - name: Deploy GitHub Pages
         run: |
           cd cryptography-handbook
-          mdbook build
-          mkdir gh-pages
           
