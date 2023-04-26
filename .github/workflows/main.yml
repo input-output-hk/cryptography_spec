@@ -8,18 +8,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Install mdbook-katex
-        run: cargo install mdbook-katex
-      - name: Install mdbook-graphviz
-        run: cargo install mdbook-graphviz
-      - name: Install mdbook
-        run: cargo install mdbook
+      uses: baptiste0928/cargo-install@v2
       - name: Deploy GitHub Pages
         run: |
-          ls
+          cd cryptography-handbook
           mdbook build
           git worktree add gh-pages
           git config user.name "Deploy from CI"
