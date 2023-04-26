@@ -22,7 +22,9 @@ jobs:
         uses: baptiste0928/cargo-install@v2
         with:
           crate: mdbook
+          version: "0.4.25"
       - name: Deploy GitHub Pages
         run: |
           cd cryptography-handbook
+          ls
           mdbook build
