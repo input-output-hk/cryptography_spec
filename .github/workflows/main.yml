@@ -8,7 +8,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      uses: baptiste0928/cargo-install@v2
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install mdbook-katex
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: mdbook-katex
+      - name: Install mdbook-graphviz
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: mdbook-graphviz
+      - name: Install mdbook
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: mdbook
       - name: Deploy GitHub Pages
         run: |
           cd cryptography-handbook
