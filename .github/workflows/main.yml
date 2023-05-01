@@ -1,8 +1,7 @@
 name: Deploy
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [ "**" ]
 
 jobs:
   deploy:
@@ -11,18 +10,14 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Install mdbook-katex
-        uses: baptiste0928/cargo-install@v2
-        with:
-          crate: mdbook-katex
-      - name: Install mdbook-graphviz
-        uses: baptiste0928/cargo-install@v2
-        with:
-          crate: mdbook-graphviz
       - name: Install mdbook
         uses: baptiste0928/cargo-install@v2
         with:
           crate: mdbook
+      - name: Install mdbook-katex
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: mdbook-katex
       - name: Deploy GitHub Pages
         run: |
           cd cryptography-handbook
@@ -30,8 +25,7 @@ jobs:
           git worktree add gh-pages
           git config user.name "Deploy from CI"
           git config user.email ""
-          cd gh-pages
-          # Delete the ref to avoid keeping history.
+          cd gh-pages # Delete the ref to avoid keeping history.
           git update-ref -d refs/heads/gh-pages
           rm -rf *
           mv ../book/html/* .
