@@ -7,6 +7,8 @@
 \signingkey:{sk}
 \vk:{vk}
 \signature:{\sigma}
+\batch:{\texttt{BathComm}}
+
 
 %% Group %%
 \ec:{E}

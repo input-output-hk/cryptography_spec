@@ -1,11 +1,14 @@
 # Schnorr
 
-Schnorr, together with ECDSA, were two new signature algorithms introduced
-in Plutus during Cardano's Valentine upgrade.
+Schnorr, together with ECDSA, were two new signature algorithms introduced in Plutus during Cardano's Valentine 
+upgrade.
+MuSig2 is a two-round multi-signature scheme will be integrated to Hydra.
 
 ## Generalised specification
-This section presents the generalized signature system ECDSA, and in the [parameter](#parameters-of-instantiation) section, we present the
-specific parameters used in Cardano. A Schnorr signature consists of the following three algorithms:
+This section presents the generalized signature system ECDSA and MuSig2. In the [parameter]
+(#parameters-of-instantiation) section, we present the specific parameters used in Cardano and MuSig2 C implementation. 
+
+A Schnorr signature consists of the following three algorithms:
 * $ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
   (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
   $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
@@ -16,6 +19,17 @@ specific parameters used in Cardano. A Schnorr signature consists of the followi
 * $ \verify(m, \vk, \signature) $ takes as input a message $ m $, a verification key $ \vk $ and a signature
   $ \signature $, and returns $ \result \in\{\accept, \reject\} $ depending on whether the signature is valid or not. 
   The algorithm returns $ \accept $ if $ s \cdot \generator = R + c\cdot \vk$
+
+Let $N$ be the number of signers and $V$ be the number of nonces. A two-round multi-signature scheme MuSig2 that
+outputs an ordinary Schnorr signature includes the following steps:
+
+* $ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
+  (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
+  $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
+
+* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $\{(nonce,
+  COMM)_{1}, \ldots, (nonce, COMM)_{V}\}$. First, it chooses $ nonce_i\gets Z_{\order} $. Finally, compute
+  $COMM_i \gets nonce_i \cdot \generator $, and returns the list including $V$ tuples of nonces and commitments.
 
 ## Parameters of instantiation
 The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow
