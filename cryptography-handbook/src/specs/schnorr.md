@@ -27,11 +27,6 @@ outputs an ordinary Schnorr signature includes the following steps:
   (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
   $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
 
-<<<<<<< HEAD
-* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $\{(nonce,
-  COMM)_{1}, \ldots, (nonce, COMM)_{V}\}$. First, it chooses $ nonce_i\gets Z_{\order} $. Finally, compute
-  $COMM_i \gets nonce_i \cdot \generator $, and returns the list including $V$ tuples of nonces and commitments.
-=======
 * $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $ \{ (nonce, 
   COMM)_{1}, \ldots, (nonce, COMM)_{V} \} $. First, it chooses $ nonce_i \gets Z_{\order} $. Finally, computes
   $ COMM_i \gets nonce_i \cdot \generator $, and returns the list including $ V $ tuples of nonces and commitments.
@@ -45,10 +40,20 @@ Finally, generates the aggregate public key by $ X = \Sigma_{i = 1}^{N} (a_i \cd
   signers' commitment lists, returns the list of aggregate commitments.
 $ \{COMM_j = (\Sigma_{i = 1}^{V} (COMM_{ij})_{i = 1..N})\}_{j = 1, \ldosts, V} $
 
-* $ \sign(\secretkey, \vk, m) $ takes as input a keypair $ (\secretkey, \vk) $ and a message $ m $, and returns a
-  signature $ \signature $. Let $ k \gets Z_{\order} $. Compute $K = k \cdot * generator$, then compute
-  $ c \gets \hash(K, pk, m)$, and finally compute $s = r + c \cdot \secretkey$. Let $\signature\gets (K, s)$.
->>>>>>> 8325802 (Schnorr generalized specification include MuSig2 v0)
+* $ \sign(\secretkey_i, \vk_i, m, X, (COMM_{1}, \ldots, COMM_{V}), (nonce_{i1}, \ldots, nonce_{iV})) $ takes as 
+  input the keypair of the signer, a message $ m $, aggregate public key, the list of commitments and the list of 
+  nonces of the signer. Returns a signature $ \signature $. First, creates $ b = H_{non}(X || (COMM_1 || \ldots || 
+  COMM_V) || m) \in Z_{\order}$. Computes $ AGGRCOMM = \Sigma_{i = 1}^{V}(COMM_j^{nonce^{j-1}}) $ and $ c = H_{sig}
+  (X || R || m) $. The signature is calculated as $ \signature_i = c  a_i \secretkey_i + \Sigma_{i = 1}^{V}(nonce_
+  {ij} b^{j-1})$
+
+* $ \aggrsig(\{ \signature_1, \ldots, \signature_N \}, AGGRCOMM)$ takes the list of all
+  signers' single signatures and aggregate commitment, returns the aggregate signature $ (AGGRCOMM, \signature) $ 
+  where $ \signature = \Sigma_{i = 1}^{N}(\signature_i) $.
+
+* $ \verify(m, X, \signature, AGGRCOMM) $ takes as input a message $ m $, aggregate verification key $ X $, 
+  aggregate signature, and aggregate commitment. Computes $c = H_{sig}(X || AGGRCOMM || m)$ and accepts the signature 
+  if $\signature \cdot \generator = AGGRCOMM + c \cdot X$.
 
 ## Parameters of instantiation
 The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow
