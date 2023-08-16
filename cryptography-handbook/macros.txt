@@ -7,8 +7,9 @@
 \signingkey:{sk}
 \vk:{vk}
 \signature:{\sigma}
-\batch:{\texttt{BathComm}}
-
+\aggrcomm:{\texttt{AggrComm}}
+\aggrpk:{\texttt{AggrPubKey}}
+\batch:{\texttt{BatchComm}}
 
 %% Group %%
 \ec:{E}

@@ -27,9 +27,28 @@ outputs an ordinary Schnorr signature includes the following steps:
   (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
   $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
 
+<<<<<<< HEAD
 * $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $\{(nonce,
   COMM)_{1}, \ldots, (nonce, COMM)_{V}\}$. First, it chooses $ nonce_i\gets Z_{\order} $. Finally, compute
   $COMM_i \gets nonce_i \cdot \generator $, and returns the list including $V$ tuples of nonces and commitments.
+=======
+* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $ \{ (nonce, 
+  COMM)_{1}, \ldots, (nonce, COMM)_{V} \} $. First, it chooses $ nonce_i \gets Z_{\order} $. Finally, computes
+  $ COMM_i \gets nonce_i \cdot \generator $, and returns the list including $ V $ tuples of nonces and commitments.
+
+* $ \aggrpk(\{vk_1, \ldots, vk_N\}, \vk_i)$ takes the list of public keys and the signer's public key, returns the 
+  aggregate public key $X$ and $ a_i $. First creates $ L = (\vk_1 || \vk_2 || \ldots || \vk_N) $. Computes 
+$a_i = H_{agg}(L || \vk_i)_{i = 1..N}$ to be used in single signature by the signer. 
+Finally, generates the aggregate public key by $ X = \Sigma_{i = 1}^{N} (a_i \cdot \vk_i) $.
+
+* $ \aggrcomm(\{ (COMM_{11}, \ldots, COMM_{1V}, \ldots, (COMM_{N1}, \ldots, COMM_{NV})) \})$ takes the list of all 
+  signers' commitment lists, returns the list of aggregate commitments.
+$ \{COMM_j = (\Sigma_{i = 1}^{V} (COMM_{ij})_{i = 1..N})\}_{j = 1, \ldosts, V} $
+
+* $ \sign(\secretkey, \vk, m) $ takes as input a keypair $ (\secretkey, \vk) $ and a message $ m $, and returns a
+  signature $ \signature $. Let $ k \gets Z_{\order} $. Compute $K = k \cdot * generator$, then compute
+  $ c \gets \hash(K, pk, m)$, and finally compute $s = r + c \cdot \secretkey$. Let $\signature\gets (K, s)$.
+>>>>>>> 8325802 (Schnorr generalized specification include MuSig2 v0)
 
 ## Parameters of instantiation
 The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow
