@@ -25,6 +25,7 @@
 \seed:{r}
 \accept:{\texttt{true}}
 \reject:{\texttt{false}}
+\result:{\texttt{result}}
 
 %% VRF %%
 
