@@ -8,8 +8,6 @@ title = "IOG Cryptography Handbook"
 [output.html]
 mathjax-support = true
 
-[output.katex]
-
 [preprocessor.katex]
 macros = "./macros.txt"
 
