@@ -27,33 +27,34 @@ outputs an ordinary Schnorr signature includes the following steps:
   (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
   $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
 
-* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $ \{ (nonce, 
-  COMM)_{1}, \ldots, (nonce, COMM)_{V} \} $. First, it chooses $ nonce_i \gets Z_{\order} $. Finally, computes
-  $ COMM_i \gets nonce_i \cdot \generator $, and returns the list including $ V $ tuples of nonces and commitments.
+* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $ \{ (r_1, 
+  R_1), \ldots, (r_V, R_V) \} $. First, it chooses the nonces $ r_j \gets Z_{\order} $. Finally, computes the 
+  commitments $ R_j \gets r_j \cdot \generator $, and returns the list including $ V $ tuples of nonces and commitments.
 
-* $ \aggrpk(\{vk_1, \ldots, vk_N\}, \vk_i)$ takes the list of public keys and the signer's public key, returns the 
-  aggregate public key $X$ and $ a_i $. First creates $ L = (\vk_1 || \vk_2 || \ldots || \vk_N) $. Computes 
-$a_i = H_{agg}(L || \vk_i)_{i = 1..N}$ to be used in single signature by the signer. 
-Finally, generates the aggregate public key by $ X = \Sigma_{i = 1}^{N} (a_i \cdot \vk_i) $.
+* $ \aggrpk(\{vk_1, \ldots, vk_N\}, \vk_s)$ takes the list of public keys and the signer's public key, returns the 
+  aggregate public key $X$ and $ a_s $. First creates $ L = (\vk_1 || \vk_2 || \ldots || \vk_N) $. Computes $a_i = H_
+  {agg}(L || \vk_i)$ for $i = 1 \ldots N$. 
+  Finally, generates the aggregate public key by $ X = \Sigma_{i = 1}^{N} (a_i \cdot \vk_i) $ and the signer keeps her 
+  own $a_s$.
 
-* $ \aggrcomm(\{ (COMM_{11}, \ldots, COMM_{1V}, \ldots, (COMM_{N1}, \ldots, COMM_{NV})) \})$ takes the list of all 
-  signers' commitment lists, returns the list of aggregate commitments.
-$ \{COMM_j = (\Sigma_{i = 1}^{V} (COMM_{ij})_{i = 1..N})\}_{j = 1, \ldosts, V} $
+* $ \aggrcomm(\{ {R_{11}, R_{12}, \ldots, R_{1V},\ldots, R_{N1}, \ldots, R_{NV}}  \})$ takes the list of all 
+  signers' commitment lists, returns the list of aggregate commitments. $\{R_j = \Sigma_{i = 1}^{N} (R_{ij})\}_{j = 1..
+  V}$.
 
-* $ \sign(\secretkey_i, \vk_i, m, X, (COMM_{1}, \ldots, COMM_{V}), (nonce_{i1}, \ldots, nonce_{iV})) $ takes as 
+* $ \sign(\secretkey_s, \vk_s, m, X, (R_{1}, \ldots, R_{V}), (r_{s1}, \ldots, r_{sV})) $ takes as 
   input the keypair of the signer, a message $ m $, aggregate public key, the list of commitments and the list of 
-  nonces of the signer. Returns a signature $ \signature $. First, creates $ b = H_{non}(X || (COMM_1 || \ldots || 
-  COMM_V) || m) \in Z_{\order}$. Computes $ AGGRCOMM = \Sigma_{i = 1}^{V}(COMM_j^{nonce^{j-1}}) $ and $ c = H_{sig}
-  (X || R || m) $. The signature is calculated as $ \signature_i = c  a_i \secretkey_i + \Sigma_{i = 1}^{V}(nonce_
-  {ij} b^{j-1})$
+  nonces of the signer. Returns a signature $ \signature $. First, creates $ b = H_{non}(X || (R_1, \ldots, R_V) || 
+  m) \in Z_{\order}$. Computes $ R = \Sigma_{j = 1}^{V}(R_j^{r^{j-1}}) $ and $ c = H_{sig}(X || R || m) $. The single
+  signature is calculated as $ \signature_s = c  a_s \secretkey_s + \Sigma_{i = 1}^{V}(r_
+  {sj} b^{j-1})$.
 
-* $ \aggrsig(\{ \signature_1, \ldots, \signature_N \}, AGGRCOMM)$ takes the list of all
-  signers' single signatures and aggregate commitment, returns the aggregate signature $ (AGGRCOMM, \signature) $ 
+* $ \aggrsig(\{ \signature_1, \ldots, \signature_N \}, R)$ takes the list of all
+  signers' single signatures and aggregate commitment, returns the aggregate signature $ (R, \signature) $ 
   where $ \signature = \Sigma_{i = 1}^{N}(\signature_i) $.
 
-* $ \verify(m, X, \signature, AGGRCOMM) $ takes as input a message $ m $, aggregate verification key $ X $, 
-  aggregate signature, and aggregate commitment. Computes $c = H_{sig}(X || AGGRCOMM || m)$ and accepts the signature 
-  if $\signature \cdot \generator = AGGRCOMM + c \cdot X$.
+* $ \verify(m, X, \signature, R) $ takes as input a message, aggregate verification key, aggregate signature, and 
+  aggregate commitment. Computes $c = H_{sig}(X || R || m)$ and accepts the signature if $\signature \cdot 
+  \generator = R + c \cdot X$.
 
 ## Parameters of instantiation
 The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow
