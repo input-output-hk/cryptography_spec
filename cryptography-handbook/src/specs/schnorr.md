@@ -1,11 +1,14 @@
 # Schnorr
 
-Schnorr, together with ECDSA, were two new signature algorithms introduced
-in Plutus during Cardano's Valentine upgrade.
+Schnorr, together with ECDSA, were two new signature algorithms introduced in Plutus during Cardano's Valentine 
+upgrade.
+MuSig2 is a two-round multi-signature scheme will be integrated to Hydra.
 
 ## Generalised specification
-This section presents the generalized signature system ECDSA, and in the [parameter](#parameters-of-instantiation) section, we present the
-specific parameters used in Cardano. A Schnorr signature consists of the following three algorithms:
+This section presents the generalized signature system ECDSA and MuSig2. In the [parameter]
+(#parameters-of-instantiation) section, we present the specific parameters used in Cardano and MuSig2 C implementation. 
+
+A Schnorr signature consists of the following three algorithms:
 * $ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
   (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
   $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
@@ -16,6 +19,42 @@ specific parameters used in Cardano. A Schnorr signature consists of the followi
 * $ \verify(m, \vk, \signature) $ takes as input a message $ m $, a verification key $ \vk $ and a signature
   $ \signature $, and returns $ \result \in\{\accept, \reject\} $ depending on whether the signature is valid or not. 
   The algorithm returns $ \accept $ if $ s \cdot \generator = R + c\cdot \vk$
+
+Let $N$ be the number of signers and $V$ be the number of nonces. A two-round multi-signature scheme MuSig2 that
+outputs an ordinary Schnorr signature includes the following steps:
+
+* $ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
+  (\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
+  $ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.
+
+* $ \batch(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns $V$ key-pairs $ \{ (r_1, 
+  R_1), \ldots, (r_V, R_V) \} $. First, it chooses the nonces $ r_j \gets Z_{\order} $. Finally, computes the 
+  commitments $ R_j \gets r_j \cdot \generator $, and returns the list including $ V $ tuples of nonces and commitments.
+
+* $ \aggrpk(\{vk_1, \ldots, vk_N\}, \vk_s)$ takes the list of public keys and the signer's public key, returns the 
+  aggregate public key $X$ and $ a_s $. First creates $ L = (\vk_1 || \vk_2 || \ldots || \vk_N) $. Computes $a_i = H_
+  {agg}(L || \vk_i)$ for $i = 1 \ldots N$. 
+  Finally, generates the aggregate public key by $ X = \Sigma_{i = 1}^{N} (a_i \cdot \vk_i) $ and the signer keeps her 
+  own $a_s$.
+
+* $ \aggrcomm(\{ {R_{11}, R_{12}, \ldots, R_{1V},\ldots, R_{N1}, \ldots, R_{NV}}  \})$ takes the list of all 
+  signers' commitment lists, returns the list of aggregate commitments. $\{R_j = \Sigma_{i = 1}^{N} (R_{ij})\}_{j = 1..
+  V}$.
+
+* $ \sign(\secretkey_s, \vk_s, m, X, (R_{1}, \ldots, R_{V}), (r_{s1}, \ldots, r_{sV})) $ takes as 
+  input the keypair of the signer, a message $ m $, aggregate public key, the list of commitments and the list of 
+  nonces of the signer. Returns a signature $ \signature $. First, creates $ b = H_{non}(X || (R_1, \ldots, R_V) || 
+  m) \in Z_{\order}$. Computes $ R = \Sigma_{j = 1}^{V}(R_j^{r^{j-1}}) $ and $ c = H_{sig}(X || R || m) $. The single
+  signature is calculated as $ \signature_s = c  a_s \secretkey_s + \Sigma_{i = 1}^{V}(r_
+  {sj} b^{j-1})$.
+
+* $ \aggrsig(\{ \signature_1, \ldots, \signature_N \}, R)$ takes the list of all
+  signers' single signatures and aggregate commitment, returns the aggregate signature $ (R, \signature) $ 
+  where $ \signature = \Sigma_{i = 1}^{N}(\signature_i) $.
+
+* $ \verify(m, X, \signature, R) $ takes as input a message, aggregate verification key, aggregate signature, and 
+  aggregate commitment. Computes $c = H_{sig}(X || R || m)$ and accepts the signature if $\signature \cdot 
+  \generator = R + c \cdot X$.
 
 ## Parameters of instantiation
 The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow

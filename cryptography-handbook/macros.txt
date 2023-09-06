@@ -7,6 +7,11 @@
 \signingkey:{sk}
 \vk:{vk}
 \signature:{\sigma}
+\aggrcomm:{\texttt{AggrComm}}
+\aggrpk:{\texttt{AggrPubKey}}
+\batch:{\texttt{BatchComm}}
+\aggrsig:{\texttt{AggrSig}}
+
 
 %% Group %%
 \ec:{E}
