@@ -3,8 +3,7 @@
 This document provides an engineering-level introduction to **Mithril as instantiated in the Leios project**.  
 It explains the **flow of operations** (key registration, voting, certification, verification), the **committee model**, and provides a **certificate size analysis**.  
 
-This Leios version of Mithril relies on **BLS signatures** and introduces a key improvement:  
-the use of **persistent and non-persistent voters**. This design keeps certificates compact, typically under 10 KB, while ensuring fairness.
+This Leios version of Mithril relies on **BLS signatures** and introduces a key improvement: the use of **persistent and non-persistent voters**. This design keeps certificates compact, typically under 10 KB, while ensuring fairness.
 
 ---
 
@@ -12,25 +11,20 @@ the use of **persistent and non-persistent voters**. This design keeps certifica
 
 Mithril certificates prove that *enough stake endorsed a block or snapshot*.  
 
-Key elements:
-- **Persistent voters**: large SPOs, stable per epoch, compactly encoded.
-- **Non-persistent voters**: smaller SPOs, chosen per block, explicit eligibility proofs.
-- **BLS aggregation**: constant-size signatures regardless of committee size.
-
 ---
 
 ## 2. Committee Model
 
 ### 2.1 Persistent voters
-- Chosen once per epoch via **Fait Accompli sortition**.  
 - Typically high-stake SPOs.  
+- Chosen once per epoch via **Fait Accompli sortition**.  
 - **Always eligible** for every block in the epoch.  
 - Identified by a compact **epoch-specific 2-byte ID**.  
 - Require no eligibility proof.  
 
 ### 2.2 Non-persistent voters
-- Chosen per endorsement block via **local sortition**.  
 - Typically lower-stake SPOs.  
+- Chosen per endorsement block via **local sortition**.  
 - Identified by a **28-byte pool ID**.  
 - Must attach an **eligibility signature** (48 bytes, BLS on election ID).  
 
@@ -52,7 +46,7 @@ Each pool registers its voting key and proves control:
 
 - Registrations are recorded on-chain.  
 - Nodes verify PoP to prevent rogue-key attacks.  
-- Keys are long-lived; rotation is via re-registration.  
+- Keys are long-lived; rotation is via re-registration (TBC).  
 - Domain separation and epoch IDs prevent replay.  
 
 ---
@@ -64,7 +58,7 @@ Each eligible voter casts a vote:
 **Common fields:**
 - Election ID (8 bytes)  
 - Endorser block hash (32 bytes)  
-- Vote signature (48 bytes, BLS)  
+- Vote signature (48 bytes, BLS)
 
 **Persistent-specific:**  
 - Epoch-specific ID (2 bytes)  
@@ -79,7 +73,12 @@ Each eligible voter casts a vote:
 
 ### 3.3 Certification (Aggregation)
 
-The aggregator collects votes and builds a certificate:
+The aggregator collects votes up to a quorum threshold and builds a certificate:
+
+**Notation.**
+- `n`: total number of committee seats (voters participating in the election).
+- `m`: number of persistent voters.
+- `n − m`: number of non-persistent voters.
 
 1. **Election + EB data**: Election ID (8 bytes), EB hash (32 bytes).  
 2. **Voter identity**:  
@@ -90,8 +89,7 @@ The aggregator collects votes and builds a certificate:
    - Non-persistent → BLS signatures, 48 × (n − m) bytes.  
 4. **Aggregate signatures**:  
    - 48-byte aggregate on message.  
-   - Optional 48-byte aggregate on eligibility proofs.  
-5. **Metadata**: ~136 bytes total.  
+   - (Perhaps not strictly necessary) 48-byte aggregate on eligibility proofs.  
 
 ---
 
@@ -102,7 +100,7 @@ Verifiers process the certificate:
 1. **Persistent voters**: read from bitset, no eligibility check.  
 2. **Non-persistent voters**: verify Pool ID and eligibility proof.  
 3. **Aggregate signature**: check BLS aggregate signature.  
-4. **Threshold rule**: compute total stake, confirm ≥ quorum (e.g., 60%).  
+4. **Threshold rule**: compute total stake, confirm ≥ quorum (e.g., 75%).  
 
 ---
 
@@ -140,7 +138,7 @@ Cert size ≈ 136 + ⌈m/8⌉ + 76 · (n − m)
 
 ✅ Still under 10 KB
 
-**Remark.** In Leios, as `n` grows, we target a **constant (n−m)** by letting the **persistent ratio rise** with `n` (or by selecting additional persistent seats). Keeping the expensive non‑persistent block roughly constant **flattens certificate size** as the committee scales. This matches the near‑flat behavior observed in the specification plots.
+**Remark.** In Leios, as `n` grows, we target a **constant (n−m)** by letting the **persistent ratio rise** with `n`. Keeping the expensive non‑persistent block roughly constant **flattens certificate size** as the committee scales. This matches the near‑flat behavior observed in the specification plots.
 
 ---
 
@@ -153,7 +151,7 @@ Cert size ≈ 136 + ⌈m/8⌉ + 76 · (n − m)
 
 ---
 
-## 6. Relation to General Mithril
+## 6. Relation to General Mithril (TBC)
 
 ### Common elements
 - **BLS signatures** with PoP for safe aggregation.  
@@ -170,9 +168,8 @@ Cert size ≈ 136 + ⌈m/8⌉ + 76 · (n − m)
 - **Persistent vs non-persistent voters**: replaces lottery-based seats with a mixed model.  
 - **On-chain registry lookup**: assumes verifiers can directly access the epoch’s registry.  
   - Avoids Merkle paths in certificates.  
-  - Optimizes for full-node verifiers rather than stateless clients.  
 - **Certificate size optimization**: persistent = bitset, non-persistent = 76 bytes each.  
-- **No ZK compression**: relies on design and stake distribution to keep size under 10 KB.  
+- **No ZK compression**: certificate's size is kept under 10 KB.  
 
 ---
 
