@@ -1,4 +1,4 @@
-# Cryptography of Leios (Voting Scheme)
+# Cryptography of Leios's Voting
 
 This document provides an engineering-level introduction to **Mithril as instantiated in the Leios project**.  
 It explains the **flow of operations** (key registration, voting, certification, verification), the **committee model**, and provides a **certificate size analysis**.  
