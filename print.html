@@ -1,0 +1,925 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>IOG Cryptography Handbook</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-ad2775c1.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-611f8a17.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-56612340.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-4f196211.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-7166a0b6.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IOG Cryptography Handbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<pre><code class="language-warning">This document is WORK IN PROGRESS. While the document
+has this warning, check with your local cryptographer
+whether the final solution is correct for your 
+particular use case.
+</code></pre>
+<p>This document forms the IOG Cryptography Handbook, which aims to provide a go-to for engineers having
+to make a choice on which implementations to use for given cryptographic primitives.
+This document contains a specification of all the cryptographic primitives being used in production,
+or in testing phase, and at least a reference to the ongoing efforts of other cryptographic primitives.</p>
+<p>The target audience for the Handbook is everyone working on a project associated with an IOG product,
+or within the Cardano ecosystem. This is also the set of target contributors for the Handbook! Anyone
+can submit a change proposal as a PR (see <a href="#contributing">‘Contributing’</a>).</p>
+<h1 id="purpose"><a class="header" href="#purpose">Purpose</a></h1>
+<p>The purpose of this handbook is both descriptive and to list existing implementations:</p>
+<ul>
+<li>Firstly, it lists particular implementations for given cryptographic primitives that are being
+used, or have been reviewed, by IOG matter experts.</li>
+<li>Secondly, it describes the cryptographic primitives in detail (or points interested reader to
+further material), to allow engineers to choose alternative implementation which are compatible
+with the primitives used by IOG.</li>
+</ul>
+<h1 id="goals"><a class="header" href="#goals">Goals</a></h1>
+<p>The goals of the Handbook are to:</p>
+<ul>
+<li>Provide a place to record all cryptographic libraries being used in IOG projects.</li>
+<li>Present a sufficient level of detail of the cryptographic primitives to allow engineers
+to make independent decisions without having to contact matter experts or look into
+the source code.</li>
+<li>Encourage consistency across the organization in order to minimize cognitive overheads
+from unnecessary differences.</li>
+<li>Avoid implementing of primitives that already exist and/or are being used in IOG.</li>
+<li>List common mistakes when handling with these type of libraries.</li>
+</ul>
+<h1 id="non-goals"><a class="header" href="#non-goals">Non-goals</a></h1>
+<p>The following are explicitly not goals of the Handbook:</p>
+<ul>
+<li>The recommended libraries are by no means flawless. As in any piece of software, the libraries
+hereby listed can have bugs.</li>
+<li>Provide an exhaustive list of all available implementations in all languages. We only have a limited
+number of cryptographers, and this list will grow as we look into existing implementation of used
+primitives.</li>
+</ul>
+<p>The Handbook is very new and will gradually acquire more content over time. We hope to
+improve all of this over time!</p>
+<h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<p>If a project needs a particular primitive, which is not present in this document, the mechanism
+to include is simple. Add an issue to the
+<a href="https://github.com/input-output-hk/cryptography_spec">repo</a>, specifying why such a
+primitive is of interest, and how it would be used. To make the discussion more effective,
+it is also of interest to link references to the specification, or available implementations.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ed25519"><a class="header" href="#ed25519">Ed25519</a></h1>
+<p>Ed25519 is the signature scheme being used in Cardano, and supported in
+Plutus. Ed25519 is an instantiation of the EdDSA over the Edwards25519 elliptic curve.</p>
+<h2 id="implementation-and-bindings"><a class="header" href="#implementation-and-bindings">Implementation and bindings</a></h2>
+<p>We currently relly in the implementation available in version <a href="https://github.com/jedisct1/libsodium/tree/1.0.18/src/libsodium/crypto_sign/ed25519/ref10">1.0.18 of libsodium</a>. We have analysed, and recommend, bindings
+in the following languages:</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/DSIGN/Ed25519.hs">cardano-base</a></li>
+<li>Rust: Made <a href="https://github.com/jedisct1/libsodium-sys-stable">available</a> by the original author of libsodium</li>
+<li>Javascript: Made <a href="https://github.com/jedisct1/libsodium.js">available</a> by the original author of libsodium (among others)</li>
+</ul>
+<p>There also exist other implementations that offer a compatible signing algorithm which do not require the full
+usage of libsodium. The list we have analaysed and recommend is the following:</p>
+<ul>
+<li>Rust: <a href="https://github.com/dalek-cryptography/ed25519-dalek">ed25519-dalek</a>, <strong>using the <code>verify_strict()</code></strong> function.</li>
+<li>Javascript: <a href="https://github.com/dchest/tweetnacl-js">tweetnacl-js</a>, though the verification criteria of this library <strong>is more permissive</strong>,
+meaning that a valid signature for tweetnacl-js might not be valid for Cardano.</li>
+</ul>
+<h2 id="common-mistakes"><a class="header" href="#common-mistakes">Common mistakes</a></h2>
+<p>An ed25519 signature consists of two values $ (R,s) $, where $ R $ is an elliptic curve point
+and $ s\in\mathbb{Z}_{\order} $ is a scalar. A common mistake when deserialising the scalar $ s $
+is to compute it modulo $ \order $ in case that $ s $ is larger than $ \order $. This must be
+avoided, specifically in consensus critical scenarios.</p>
+<p>Another common mistake is what criteria to use when deserialising an elliptic curve point. If none
+of the libraries listed above are used, the engineer should carefully read the <a href="#generalised-specification">sections</a>
+<a href="#parameters-of-instantiation">below</a> to understand the details, and the verification criteria used
+in Cardano.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="kes"><a class="header" href="#kes">KES</a></h1>
+<p>In Cardano, nodes use Key Evolving Signatures (KES).
+This is another asymmetric key cryptographic scheme, also relying on
+the use of public and private key pairs.
+These signature schemes provide forward cryptographic security, meaning that a
+compromised key does not make it easier for an adversary to forge a signature that
+allegedly had been signed in the past.</p>
+<p>In KES, the public verification key stays constant, but the
+corresponding private key evolves incrementally. For this reason, KES
+signing keys are indexed by integers representing the step in the key’s
+evolution. Since the private key evolves incrementally in a KES scheme, the ledger rules
+require the pool operators to evolve their keys every time a certain number of
+slots have passed. The details of when these keys are evolved are out of the
+scope of this document, and the reader is directed to the
+<a href="https://github.com/input-output-hk/cardano-ledger#repository-structure">ledger spec</a>.</p>
+<h2 id="implementation-and-bindings-1"><a class="header" href="#implementation-and-bindings-1">Implementation and bindings</a></h2>
+<p>The Cardano compatible KES implementations are</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/KES/Class.hs">cardano-base</a></li>
+<li>Rust: Available in <a href="https://crates.io/crates/kes-summed-ed25519">crates.io</a></li>
+</ul>
+<p>The particular instantiation used in Cardano is of depth 6. An improvement on the representation of signatures
+is being worked on, and planned to be included in the next HF. This compact representation is available in
+both the Haskell
+<a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/KES/CompactSum.hs">library</a>
+and the <a href="https://docs.rs/kes-summed-ed25519/0.1.1/kes_summed_ed25519/kes/struct.Sum6CompactKesSig.html">rust counterpart</a>.</p>
+<p><strong>Note</strong>: The secret key representations of both libraries <em>are not</em> compatible. A padding strategy can be made to
+use Haskell generated data in Rust, but not vice-versa. To see this padding trick, you can look in the interoperability
+tests of the <a href="https://github.com/input-output-hk/kes/blob/2242497efa7a421fcc82e2a3ff509bb43d00eb3e/tests/interoperability.rs#L45">rust library</a>.</p>
+<h2 id="common-mistakes-1"><a class="header" href="#common-mistakes-1">Common mistakes</a></h2>
+<p>The main building block of KES is its underlying signature scheme, Ed25519. We refer the reader to the common mistakes
+<a href="#common-mistakes">section</a> of Ed25519.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="bip32-ed25519"><a class="header" href="#bip32-ed25519">BIP32-ed25519</a></h1>
+<p>BIP32-ed25519 is an adaptation of the <a href="https://en.bitcoin.it/wiki/BIP_0032">BIP32</a> proposal for
+deterministic key generation for the Ed25519 curve which has non-linear key space.</p>
+<h2 id="implementation-and-bindings-2"><a class="header" href="#implementation-and-bindings-2">Implementation and bindings</a></h2>
+<p>We currently have two implementations of BIP32:</p>
+<ul>
+<li>C: Available in <a href="https://github.com/input-output-hk/cardano-crypto/tree/develop/cbits">cardano-crypto</a></li>
+<li>Rust: Implemented by Vincent Hanquez, <a href="https://github.com/typed-io/rust-ed25519-bip32/">here</a>.</li>
+</ul>
+<p>The preferred implementation is that of Rust, but both are safe to use.</p>
+<p>For the C implementation, we have bindings in the following languages:</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-crypto/tree/develop/src/Crypto/ECC">cardano-crypto</a></li>
+</ul>
+<h2 id="common-mistakes-2"><a class="header" href="#common-mistakes-2">Common mistakes</a></h2>
+<p>As the underlying signature algorithm is ed25519, we refer the reader to <a href="#common-mistakes">common mistakes</a>
+of that section.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ecdsa"><a class="header" href="#ecdsa">ECDSA</a></h1>
+<p>ECDSA is one of signature schemes supported natively in Plutus, together with <a href="#ed25519">ed25519</a> and <a href="#schnorr">Schnorr</a>. In
+particular, the natively supported ECDSA algorithm works over curve SECP256k1, enabling support for Bitcoin’s and Ethereum’s native
+signatures.</p>
+<h2 id="implementation-and-bindings-3"><a class="header" href="#implementation-and-bindings-3">Implementation and bindings</a></h2>
+<p>We currently relly in Bitcoin’s implementation available in <a href="https://github.com/bitcoin-core/secp256k1/blob/master/src/secp256k1.c#L444">secp256k1</a>.
+We have analysed, and recommend, bindings in the following languages:</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/DSIGN/EcdsaSecp256k1.hs">cardano-base</a></li>
+</ul>
+<h2 id="common-mistakes-3"><a class="header" href="#common-mistakes-3">Common mistakes</a></h2>
+<p>An ECDSA signature consists of two values $ (r,s) $, where are scalars. A problem of using ECDSA in consensus critical
+contexts, is that the signature algorithm (as defined in the standard) is <a href="https://bitcoin.stackexchange.com/questions/83408/in-ecdsa-why-is-r-%E2%88%92s-mod-n-complementary-to-r-">malleable</a>.
+Specifically, given a valid signature $(r, s)$, the tuple $(r, -s)$ is also a valid signature.
+To avoid problems resulting from this malleability, the implementation we use <a href="https://github.com/bitcoin-core/secp256k1/blob/master/src/secp256k1.c#L455">checks that</a> the $$ s &lt; p/2$$, where $p$ is
+the order of the prime order group. More details of such a check in the <a href="#ecdsa-1">spec</a> section.</p>
+<p>Another common problem of verifying ECDSA signatures is that the hashing of the message must be performed
+by the verifier itself, rather than accepting a hashed message. This can be <a href="https://bitcoin.stackexchange.com/a/81116/35586">dangerous</a>.
+Therefore, the verifier, before proceeding with verification, hashes the message.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="schnorr"><a class="header" href="#schnorr">Schnorr</a></h1>
+<p>Schnorr is one of signature schemes supported natively in Plutus, together with <a href="#ed25519">ed25519</a> and <a href="#ecdsa">ECDSA</a>. In
+particular, the natively supported ECDSA algorithm works over curve SECP256k1, enabling support for Bitcoin’s and Ethereum’s native
+signatures.</p>
+<h2 id="implementation-and-binding"><a class="header" href="#implementation-and-binding">Implementation and binding</a></h2>
+<p>We currently relly in Bitcoin’s implementation available in <a href="https://github.com/bitcoin-core/secp256k1/tree/master/src/modules/schnorrsig">secp256k1</a>.
+We have analysed, and recommend, bindings in the following languages:</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/DSIGN/SchnorrSecp256k1.hs">cardano-base</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="vrf-ed25519"><a class="header" href="#vrf-ed25519">VRF-ed25519</a></h1>
+<p>Verifiable Random Functions ($ \vrf $) allow key-pair owners, $ (\vrfsk, \vrfvk) $,
+to evaluate a pseudorandom function in a provable way given a randomness seed.
+Any party with access to the verification key, $\vrfvk$, the
+randomness seed, the proof and the generated randomness can indeed verify
+that the value is computed as expected. The VRF specification has changed
+overtime in Cardano, and the nodes use a different algorith, pre-Babbage and
+post-Babbage (if there exists a reference to the HF, we should point it out).
+We expose both specifications, and the motivations for such a change.</p>
+<h2 id="implementation-and-bindings-4"><a class="header" href="#implementation-and-bindings-4">Implementation and bindings</a></h2>
+<p>We currently rely in the implementation available in the <a href="https://github.com/input-output-hk/libsodium/tree/iquerejeta/vrf_batchverify">fork of
+libsodium</a>. We have analysed, and recommend, bindings in the following languages:</p>
+<ul>
+<li>Haskell: Available in <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/VRF/Class.hs">cardano-base</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="notation-1"><a href="#notation-1" class="header">Notation</a></h1>
+<h2 id="notation"><a class="header" href="#notation">Notation</a></h2>
+<p>In this section we introduce some generic notation used throughout the spec. The
+primitive-specific notation is introduced in the respective sections.</p>
+<p>We denote by $\ec (F_p)$ the finite abelian group based on an elliptic curve over a finite prime-order field
+$F_p$ (note that we simplify the notation and drop the explicit dependency on $F_p$ and security
+parameter $\kappa$). Most importantly, we assume the order of the group $\ec$ to be of the form $\cofvar\cdot \order$
+for some small <em>cofactor</em> $\cofvar$ (sometimes equal to 1) and large prime number $\order$, and that the (hence)
+unique (sub)group $\group$ of order $\order$ is generated by a known base point $\generator$, i.e.,
+$\group = \langle \generator\rangle$,  in which the computational Diffie-Hellman (CDH) problem is believed to be hard. We use
+$\hash$ to denote a cryptographically safe hash function, modeled as a random oracle,
+$$ \hash: \lbrace 0, 1\rbrace^\text{a}\rightarrow{0,1}^{\ell(\kappa)}. $$
+for any value of $a$ (we tried using $*$ but the katex compiler was not happy with it).</p>
+<p>An elliptic curve point can be determined using the y-coordinate and the sign of the
+$x$-coordinate, meaning that an elliptic curve point can be represented using $s=\lceil\log_2(p)\rceil + 1$ bits.
+All elements in $F_p$ or $F_q$ are serialised in little-endian form. Elliptic curve points
+are encoded using their $y$-coordinate followed by the sign bit of the $x$ coordinate. An element $x$ in $F_p$
+is negative if the enconding of $x$ is lexicographically larger than the encoding of $-x$.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ed25519-1"><a class="header" href="#ed25519-1">Ed25519</a></h1>
+<p>Ed25519 is the signature scheme being used in Cardano, and supported in
+Plutus. Ed25519 is an instantiation of the EdDSA over the Edwards25519 elliptic curve.</p>
+<h2 id="generalised-specification"><a class="header" href="#generalised-specification">Generalised specification</a></h2>
+<p>This section presents the generalized signature system EdDSA, and in the <a href="#parameters-of-instantiation">parameter</a> section, we present the
+specific parameters used in Cardano. EdDSA is parametrized with the following parameters. An integer $ b\geq 10 $, a
+cryptographic hash function $ \hash $ producing a $ 2b $-bit output, and a finite abelian group based on an elliptic
+curve. An EdDSA, signature consists of the following three algorithms:</p>
+<ul>
+<li>$ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
+(\secretkey, \vk)$. First, it chooses $ \secretkey\leftarrow{0,1}^b $. Next, let $ (h_0, h_1, \ldots, h_{2b - 1})\gets\hash(\secretkey) $,
+and compute the signing key, $ \signingkey \gets 2^{b-2} + \sum_{3\leq i\leq b-3}2^i h_i $
+. Finally, compute $ \vk \gets \signingkey \cdot \generator $, and return $ (\secretkey, \vk) $.</li>
+<li>$ \sign(\secretkey, \vk, m) $ takes as input a keypair $ (\secretkey, \vk) $ and a message $ m $, and returns a
+signature $ \signature $. Let $ r \gets H(h_b, \ldots, h_{2b-1}, m) $, and interpret the result as a little-endian
+integer in $ {0,1,\ldots, 2^{2b}-1} $. Let $ R \gets r\cdot\generator $, and $ S \gets (r + H(R, A, M)\cdot
+\signingkey) \mod \order $. Return $ \signature \gets (R, S) $.</li>
+<li>$ \verify(m, \vk, \signature) $ takes as input a message $ m $, a verification key $ \vk $ and a signature
+$ \signature $, and returns $ r\in{\accept, \reject} $ depending on whether the signature is valid or not. The algorithm
+returns $ \accept $ if the following equation holds and $ \reject $ otherwise:
+$$ S\cdot\generator = R + H(R, \vk, m)\cdot \vk. $$</li>
+</ul>
+<h2 id="parameters-of-instantiation"><a class="header" href="#parameters-of-instantiation">Parameters of instantiation</a></h2>
+<p>In this section we set to describe the concrete instantiation of the algorithm presented above. Not only we describe
+the Curves and Hash functions used, but we also specify how deserialization happens, as this results in important
+differences of the acceptance criteria of valid signatures. The algorithm we use is Ed25519<sup class="footnote-reference" id="fr-ed25519-1"><a href="#footnote-ed25519">1</a></sup>.
+However, our implementation slightly differs in the deserialization criteria. The details are as follows:</p>
+<ul>
+<li>Parameter $b$: We set $b=256$</li>
+<li>Curve: We define the curve, and by consequence the finite prime order field, security parameter, cofactor,
+prime order subgroup and generator. In particular, we use Edwards25519 which
+is birationally equivalent to Curve25519<sup class="footnote-reference" id="fr-curve25519-1"><a href="#footnote-curve25519">2</a></sup>.</li>
+<li>Hash: As a hashing algorithm we use SHA512.</li>
+<li>Deserialization: A signature is represented by 64 bytes: the first 32 bytes, $b_{[..32]}$, represent the
+point $R$, and the final 32 bytes, $b_{[32..]}$, represent the scalar $S$. A public key is also represented as 32
+bytes, $b_{pk}$. Deserialization is valid only if:
+<ul>
+<li>$b_{[32..]}$, read as a little-endian integer, is smaller than $\order$.</li>
+<li>$b_{[..32]}$ does not represent a low order point (by checking against a precomputed blacklist of size
+$\cofvar$).</li>
+<li>$b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
+$\cofvar$), and when read as a little-endian integer, it is smaller than $p$.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-ed25519">
+<p>Bernstein, Duif, Lange, Schwabe and Yang, <em>High-Speed High-Security Signatures</em> <a href="#fr-ed25519-1">↩</a></p>
+</li>
+<li id="footnote-curve25519">
+<p>Bernstein, <em>Curve25519: New Diffie-Hellman Speed Records</em> <a href="#fr-curve25519-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="kes-1"><a class="header" href="#kes-1">KES</a></h1>
+<p>In Cardano, nodes use Key Evolving Signatures (KES).
+This is another asymmetric key cryptographic scheme, also relying on
+the use of public and private key pairs.
+These signature schemes provide forward cryptographic security, meaning that a
+compromised key does not make it easier for an adversary to forge a signature that
+allegedly had been signed in the past.</p>
+<p>In KES, the public verification key stays constant, but the
+corresponding private key evolves incrementally. For this reason, KES
+signing keys are indexed by integers representing the step in the key’s
+evolution. Since the private key evolves incrementally in a KES scheme, the ledger rules
+require the pool operators to evolve their keys every time a certain number of
+slots have passed. The details of when these keys are evolved are out of the
+scope of this document, and the reader is directed to the
+<a href="https://github.com/input-output-hk/cardano-ledger#repository-structure">ledger spec</a>.</p>
+<h2 id="generalised-specification-1"><a class="header" href="#generalised-specification-1">Generalised specification</a></h2>
+<p>We use the iterated sum construction from Section 4.3 of MMM<sup class="footnote-reference" id="fr-summedkes-1"><a href="#footnote-summedkes">1</a></sup>.
+A KES signature algorithm is parametrized by four algorithms, $\keygen, \sign, \update$ and $\verify$. The sum
+construction depends on two signing algorithms, $\Sigma_0 = (\keygen_0, \sign_0, \allowbreak\update_0, \verify_0)$
+and $\Sigma_1 = (\keygen_1, \sign_1, \update_1, \verify_1)$, which are forward-secure with $T_0$ and $T_1$ time
+periods respectively. As specified in the paper, any digital signature algorithm can be considered as a
+forward-secure signature algorithm with 1 time period.
+We use two specialized versions of the key generation, one to generate the public
+part, and another to generate the secret part, $\pkeygen, \skeygen$ respectively. The KES algorithm
+uses a length doubling pseudorandom generator, $\prf:{0,1}^{\secparam}\rightarrow{0,1}^{\secparam}\times{0,
+1}^{\secparam}$, where given a random seed, $s$, returns two random seeds of the same size $s_1, s_2$. The sum
+construction begins by generating a signing algorithm with two periods by merging two instances of the base signature,
+and proceeds recursively until the desired level of periods is reached.</p>
+<p>The Chang hard fork will bring optimizations to the KES signature size, and we therefore have
+different verification criteria pre and post-Chang. Both instances use
+a tree of depth 6. For ease of exposure, we compare both constructions using a simple binary tree
+of depth 3 (see figure below). Consider each node as a KES instance with $2^n$ periods, where $n$ is
+the height of the node with respect to the leafs. For instance, <code>A</code> is a KES instance with $8$ periods,
+while node <code>D</code> is a KES instance with $2$ periods. Note that each KES instance is created by two child
+instances with half the periods.
+The only relevant details for compatibility on how KES algorithm works is signature generation and signature
+verification, however we provide a description of the other functions. The details on how the keys are managed are
+details of implementation which will not be covered here.</p>
+<pre><code class="language-dot process">digraph keys {
+  { 
+     A, F, G, J, K, L, M, N, O, t [ shape = box, color = "black" ];
+     B, D [ shape = box, color = "black", style = "filled", fillcolor = "green" ];
+     C, E, H, I [ shape = box, color = "red", style = "filled", fillcolor = "green" ];
+   };
+   
+   A -&gt; B;
+   A -&gt; C;
+   B -&gt; D;
+   B -&gt; E;
+   C -&gt; F;
+   C -&gt; G;
+   D -&gt; H;
+   D -&gt; I;
+   E -&gt; J;
+   E -&gt; K;
+   F -&gt; L;
+   F -&gt; M;
+   G -&gt; N;
+   G -&gt; O;
+   H -&gt; t
+}
+</code></pre>
+<p>In green, we
+have the nodes for which we need to store the public key in a signature during pre-babbage eras. With red borders
+we have the nodes for which we need to store the public keys in post-babbage eras.</p>
+<h3 id="pre-chang"><a class="header" href="#pre-chang">Pre-Chang</a></h3>
+<p>The signing instances of nodes <code>H</code>-<code>O</code> are single period KES instances, and nodes
+<code>A</code>-<code>G</code> are defined by recursively calling on the algorithms presented above.
+In pre-Chang eras the signatures are computed in a naive manner, meaning
+that a signature is represented (recursively) as the underlying signature and the two public keys,
+$\sigma = (\sigma’, \vk_0,\vk_1)$.
+So for instance, the signature in node <code>A</code> of period 0 contains the signature of node <code>B</code>,
+$\sigma_b$, the public key of node <code>B</code> $\vk_b$ (which is a hash of $\vk_d$ and $\vk_e$) and the public key
+of node <code>C</code> $\vk_c$ (which is a hash of $\vk_f$ and $\vk_g$). Signature $\sigma_b$ in turn contains
+signature of node <code>D</code> $\sigma_d$, the public key of node <code>D</code> $\vk_d$ (which is a hash of $\vk_h$
+and $\vk_i$) and public key of node <code>E</code> $\vk_e$ (which is a hash of $\vk_j$ and $\vk_k$). The signature of
+node <code>D</code>, $\sigma_d$ contains in turn the signature of node <code>H</code>, $\sigma_h$, the public key
+of node <code>H</code>, $\vk_h$ and the public key of node <code>I</code> $\vk_i$. Verification of the signature works in
+the naive recursive manner. We check that $\hash(\vk_b, \vk_c) = \vk_a$, and $\hash(\vk_d, \vk_e) = \vk_b$, and
+$\hash(\vk_h, \vk_i) = \vk_d$, and finally that $\verify(m, \vk_h, \sigma_h) = \accept$.
+More specifically:</p>
+<ul>
+<li>$\keygen(\seed)$ takes as input a random seed. It then extends the seed into two parts,
+$(\seed_0, \seed_1)\gets\prf(\seed)$, and uses each seed to generate the key material of the next layer. In
+particular $(\signingkey_0, \vk_0)\gets\keygen(\seed_0)$ and $\vk_1\gets\pkeygen(\seed_1)$. Finally, it computes
+the pair’s public key $\vk\gets\hash(\vk_0, \vk_1)$ and returns $(\langle\signingkey_0, \seed_1, \vk_0,
+\vk_1\rangle, \vk)$.
+\item $\sign(t, \overbrace{\langle\signingkey’, \seed_1, \vk_0, \vk_1}^{\signingkey}\rangle, m)$
+takes as input a time period $t$, a signing key $\signingkey$ and a message. If $t&lt;T_0$, then it computes the
+signature using the first signature algorithm, $\sigma’\gets\sign_0(t, \signingkey’, m)$, otherwise it uses the
+other $\sigma’\gets\sign_1(t - T_0, \signingkey’, m)$. Finally, returns $(\langle\sigma’, \vk _0, \vk_1\rangle,
+t)$.</li>
+<li>$\update(t, \overbrace{\langle, \signingkey’, \seed_1, \vk_0, \vk_1\rangle}^{\signingkey})$ takes as input
+a time period $t$, and a signing key $\signingkey$. If $t+1&lt;T_0$, then $\signingkey’\gets\update_0(t,
+\signingkey’)$. Otherwise, it checks if its changing the key
+generation algorithm. Specifically, if $t+1=T_0$, then $\signingkey’\gets\skeygen_1(\seed_1)$ and sets the seed
+to zero $\seed_1\gets 0$. Otherwise, $\signingkey’\gets\update_1(t-T_0, \signingkey’)$.</li>
+<li>$\verify(\vk, m, \overbrace{\langle\sigma’, \vk_0, \vk_1\rangle}^{\sigma},  t)$ takes as input
+a verification key, $\vk$, a message, $m$, a signature, $\sigma$, and a time period, $t$. First, it
+checks that $\hash(\vk_0, \vk_1) = \vk$. If that is not the case, it returns $\reject$. Otherwise, if $t&lt;T_0$
+then $\verify_0(\vk_0, m, \sigma, t)$, else $\verify_1(\vk_1, m, \sigma, t-T_0)$. If verification fails, it
+returns $\reject$, otherwise it returns $\accept$.</li>
+</ul>
+<h3 id="post-chang"><a class="header" href="#post-chang">Post-Chang</a></h3>
+<p>The naive definition of the
+signature used in Pre-Chang results in poor performance with respect to the signature size. We
+don’t need to verify the hash equality at each level, and we simply need to do so at the root. In the Chang
+hardfork we introduced such an optimization. In particular, instead of storing both public keys in each signature, we
+only store the one of the branch that we are not in. For the case of the KES instances with 1 period, the KES signature
+contains not only the underlying signature, but also the public key, which allows us to re-walk the merkle path.
+Again, assume we are in period 0. Then, the signature in node
+<code>A</code> of period 0 contains the signature of node <code>B</code>, $\sigma_b$, and the public key of node
+<code>C</code> $\vk_c$ (which is a hash of $\vk_f$ and $\vk_g$). Signature $\sigma_b$ in turn contains signature of
+node <code>D</code> $\sigma_d$ and public key of node <code>E</code> $\vk_e$ (which is a hash of $\vk_j$ and $\vk_k$).
+The signature of node <code>D</code>, $\sigma_d$ contains in turn the signature of node <code>H</code>, $\sigma_h$, and the
+public key of node <code>I</code> $\vk_i$. In this case, $\sigma_h = (\sigma_{0, h}, \vk_h)$, where $\sigma_{0, h}$ is
+the underlying signature. Verification of the signature
+works going up the tree, rather than down. We check $\verify(m, \vk_h, \sigma_{0, h}) = \accept$. Then we compute the
+expected key of node <code>D</code>, $\vk_d’\gets\hash(\vk_h, \vk_i)$. Then we use that to compute the expected key of node
+<code>B</code>, $\vk_b’\gets\hash(\vk_d’, vk_e)$. Finally, we check that the leaf indeed is part of the merkle tree by
+checking that $\hash(\vk_b’, \vk_c) = \vk_a$. To derive the missing public key, we introduce a new function, $\derive$.</p>
+<p>Specifically, post-Chang KES signature algorithm modifies the $\sign$ and $\verify$ algorithms, and introduces
+$\derive$ as follows:</p>
+<ul>
+<li>$\keygen(\seed)$ takes as input a random seed. It then extends the seed into two parts,
+$(\seed_0, \seed_1)\gets\prf(\seed)$, and uses each seed to generate the key material of the next layer. In
+particular $(\signingkey_0, \vk_0)\gets\keygen(\seed_0)$ and $\vk_1\gets\pkeygen(\seed_1)$. Finally, it computes
+the pair’s public key $\vk\gets\hash(\vk_0, \vk_1)$ and returns $(\langle\signingkey_0, \seed_1, \vk_0,
+\vk_1\rangle, \vk)$.</li>
+<li>$\sign(t, \overbrace{\langle\signingkey’, \seed_1, \vk_0, \vk_1}^{\signingkey}\rangle, m)$
+takes as input a time period $t$, a signing key $\signingkey$ and a message. If $t&lt;T_0$, then it computes the
+signature using the first signature algorithm, $\sigma’\gets\sign_0(t, \signingkey’, m)$ and lets $\vk_c = \vk_1$,
+otherwise it uses the other $\sigma’\gets\sign_1(t - T_0, \signingkey’, m)$, and lets $\vk_c = \vk_0$. Finally,
+returns $(\langle\sigma’, \vk\rangle,t)$.</li>
+<li>$\update(t, \overbrace{\langle, \signingkey’, \seed_1, \vk_0, \vk_1\rangle}^{\signingkey})$ takes as input
+a time period $t$, and a signing key $\signingkey$. If $t+1&lt;T_0$, then $\signingkey’\gets\update_0(t,
+\signingkey’)$. Otherwise, it checks if its changing the key
+generation algorithm. Specifically, if $t+1=T_0$, then $\signingkey’\gets\skeygen_1(\seed_1)$ and sets the seed
+to zero $\seed_1\gets 0$. Otherwise, $\signingkey’\gets\update_1(t-T_0, \signingkey’)$.</li>
+<li>$\derive(\overbrace{\langle\sigma’, \vk_c\rangle}^{\sigma}, m, t)$ takes as input a signature $\sigma$ and a
+period $t$. If $t&lt;T_0$, then $(\vk_n, res) = \derive(\sigma’, m, t)$ and return $(\hash(\vk_n, \vk_c), res)$,
+otherwise $\vk_n = \derive(\sigma’, m, t - T_0)$ and return $(\hash(\vk_c, \vk_n), res)$.</li>
+<li>$\verify(\vk, m, \overbrace{\langle\sigma’, \vk_c\rangle}^{\sigma},  t)$ takes as input
+a verification key, $\vk$, a message, $m$, a signature, $\sigma$, and a time period, $t$. First, it
+computes $\vk_n\gets\derive(\overbrace{\langle\sigma’, \vk_c\rangle}^{\sigma}, m, t)$, and then, if
+$t&lt;T_0$, check that $\hash(\vk_n, \vk_c) = \vk$, otherwise, check that $\hash(\vk_c, \vk_n) = \vk$. If verification
+fails, it returns $\reject$, otherwise it returns $\accept$.</li>
+</ul>
+<p>For this recursive explanation to be complete, we need to define what happens when we call $\derive$ on a leaf
+signature. Recall that the signature of a leaf contains not only the underlying signature, but also the public key
+with which it is signed. The derive function at the leaf takes as input
+$(\overbrace{\langle\sigma’, \vk_c\rangle}^{\sigma}, m, t)$. It proceeds by verifying the leaf signature.
+Parse $\sigma’ = (\sigma_0, \vk)$, and compute the result $res\gets\verify(m, \vk, \sigma_0)$. If $t = 0$, then
+return $(\hash(\vk, \vk_c), res)$, else return $(\hash(\vk_c, \vk), res)$.</p>
+<h2 id="parameters-of-instantiation-1"><a class="header" href="#parameters-of-instantiation-1">Parameters of instantiation</a></h2>
+<p>The instantiation of both eras is the same. The underlying signature scheme is <a href="#ed25519-1">Ed25519</a>.
+Regarding $\pkeygen$ and $\skeygen$, in Cardano,
+these functions simply call a seeded version of Ed25519’s $\keygen$ and extract the public or private part. As a hashing
+function we use Blake2b<sup class="footnote-reference" id="fr-blake-1"><a href="#footnote-blake">2</a></sup>. Defining the pseudo random function $\prf$ is not required for compatibility
+purposes, as it is only used for private key material. However, for sake of completeness, we specify that the cardano
+node uses Blake2b as a length doubling pseudorandom generator.</p>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-summedkes">
+<p>Malkin, Micciancio and Miner, <em>Composition and Efficiency Tradeoffs for Forward-Secure Digital Signatures</em> <a href="#fr-summedkes-1">↩</a></p>
+</li>
+<li id="footnote-blake">
+<p>Aumasson, <em>The BLAKE2 Cryptographic Hash and Message Authentication Code (MAC)</em> <a href="#fr-blake-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="bip32-ed25519-1"><a href="#bip32-ed25519-1" class="header">BIP32-ed25519</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ecdsa-1"><a class="header" href="#ecdsa-1">ECDSA</a></h1>
+<p>ECDSA, together with Schnorr, were two new signature algorithms introduced in Plutus during Cardano’s Valentine upgrade.</p>
+<h2 id="generalised-specification-2"><a class="header" href="#generalised-specification-2">Generalised specification</a></h2>
+<p>This section presents the generalized signature system ECDSA, and in the <a href="#parameters-of-instantiation-2">parameter</a> section, we present the
+specific parameters used in Cardano. ECDSA is parametrized with the following parameters. An ECDSA signature
+consists of the following three algorithms:</p>
+<ul>
+<li>$ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
+(\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
+$ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.</li>
+<li>$ \sign(\secretkey, \vk, m) $ takes as input a keypair $ (\secretkey, \vk) $ and a message $ m $, and returns a
+signature $ \signature $. Let $ k \gets Z_{\order} $. Compute $K = k \cdot * generator$ and interpret the
+result as its two individual coordinates $(K_x, K_y)$. Next, compute $r \gets K_x \mod \order$. If $r=0$,
+generate a new $k$ and start over. Finally compute $s = k^{-1} (z + r * \secretkey) \mod \order$. If
+$s=0$, generate a new $k$ and start over. Otherwise, return $\signature = (r, s)$.</li>
+<li>$ \verify(m, \vk, \signature) $ takes as input a message $ m $, a verification key $ \vk $ and a signature
+$ \signature $, and returns $ r\in{\accept, \reject} $ depending on whether the signature is valid or not. The algorithm
+returns $ \accept $ if the following conditions hold and $ \reject $ otherwise:
+<ul>
+<li>$r$ and $s$ are between $1$ and $\order-1$.</li>
+<li>Compute $u_1 = z \cdot s^{-1} \mod \order$ and $u_2 = r \cdot s^{-1} \mod \order$. Compute
+$(x, y) = u_1 \cdot \generator + u_2 \cdot \generator$, and ensure it is not equal to the point
+at infinity. Checks that $r = x \mod \order$.</li>
+</ul>
+</li>
+</ul>
+<h2 id="parameters-of-instantiation-2"><a class="header" href="#parameters-of-instantiation-2">Parameters of instantiation</a></h2>
+<p>The above is the standard definition, and in cardano we instantiate it over curve SECP256k1.
+However, such a signature algorithm enables malleability. Given a valid signature $(r,s)$, if
+one sets $s’ = \order - s$, then the pair $(r, s’)$ is also a valid signature, as a point $P$
+and its negative $P’$ share the same x-coordinate. This can be problematic in consensus critical
+contexts. To that end, <a href="https://github.com/input-output-hk/cardano-base/blob/master/cardano-crypto-class/src/Cardano/Crypto/SECP256K1/C.hs#L149">we</a>
+follow <a href="https://github.com/bitcoin-core/secp256k1/blob/master/src/secp256k1.c#L455">Bitcoin’s modification</a>
+of only accepting signatures with small values of $s$, i.e. with $s &lt; p / 2$.</p>
+<p>The signatures generated using Haskell’s bindings (see <a href="#ecdsa">here</a>) use hash
+function SHA256. However, Plutus built-in function takes as input the hashed message, meaning
+that the signer and verifier can agree which hash function to use in their protocol.</p>
+<p>While we follow the verification criteria used in Bitcoin, we do not follow their serialisation
+convention, DER-encoding, which results in variable sized signatures up to 72 bytes (instead
+of the 64 byte encoding we describe in this document).</p>
+<p>More precisely, the following is what is the specification used in the plutus built-in functions:</p>
+<ul>
+<li>The verification key must correspond to the <em>(x, y)</em> coordinates of a point
+on the SECP256k1 curve, where <em>x, y</em> are unsigned integers in big-endian form.</li>
+<li>The verification key must correspond to a result produced by
+<a href="https://github.com/bitcoin-core/secp256k1/blob/master/include/secp256k1.h#L394"><code>secp256k1_ec_pubkey_serialize</code></a>,
+when given a length argument of 33, and the <code>SECP256K1_EC_COMPRESSED</code> flag.
+This implies all of the following:
+<ul>
+<li>The verification key is 33 bytes long.</li>
+<li>The first byte corresponds to the parity of the <em>y</em> coordinate; this is
+<code>0x02</code> if <em>y</em> is even, and <code>0x03</code> otherwise.</li>
+<li>The remaining 32 bytes are the bytes of the <em>x</em> coordinate.</li>
+</ul>
+</li>
+<li>The input to verify must be a 32-byte hash of the message to be checked. We
+assume that the caller of <code>verifyEcdsaSecp256k1Signature</code> receives the
+message and hashes it, rather than accepting a hash directly: doing so
+<a href="https://bitcoin.stackexchange.com/a/81116/35586">can be dangerous</a>.
+Typically, the hashing function used would be SHA256; however, this is not
+required, as only the length is checked.</li>
+<li>The signature must correspond to two unsigned integers in big-endian form;
+henceforth <em>r</em> and <em>s</em>.</li>
+<li>The signature must correspond to a result produced by
+<a href="https://github.com/bitcoin-core/secp256k1/blob/master/include/secp256k1.h#L487"><code>secp256k1_ecdsa_serialize_compact</code></a>.
+This implies all of the following:
+<ul>
+<li>The signature is 64 bytes long.</li>
+<li>The first 32 bytes are the bytes of <em>r</em>.</li>
+<li>The last 32 bytes are the bytes of <em>s</em>.</li>
+</ul>
+<pre><code>    ┏━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━┓
+    ┃ r &lt;32 bytes&gt; │ s &lt;32 bytes&gt;  ┃
+    ┗━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━┛
+    &lt;--------- signature ----------&gt;
+</code></pre>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="schnorr-1"><a class="header" href="#schnorr-1">Schnorr</a></h1>
+<p>Schnorr, together with ECDSA, were two new signature algorithms introduced
+in Plutus during Cardano’s Valentine upgrade.</p>
+<h2 id="generalised-specification-3"><a class="header" href="#generalised-specification-3">Generalised specification</a></h2>
+<p>This section presents the generalized signature system ECDSA, and in the <a href="#parameters-of-instantiation-3">parameter</a> section, we present the
+specific parameters used in Cardano. A Schnorr signature consists of the following three algorithms:</p>
+<ul>
+<li>$ \keygen(1^\secparam) $ takes as input the security parameter $ \secparam $ and returns a key-pair $
+(\secretkey, \vk)$. First, it chooses $ \secretkey\gets Z_{\order} $. Finally, compute
+$ \vk \gets \secretkey \cdot \generator $, and return $ (\secretkey, \vk) $.</li>
+<li>$ \sign(\secretkey, \vk, m) $ takes as input a keypair $ (\secretkey, \vk) $ and a message $ m $, and returns a
+signature $ \signature $. Let $ r \gets Z_{\order} $. Compute $ R = r \cdot \generator$, then compute
+$ c \gets \hash(R, \vk, m)$, and finally compute $s = r + c \cdot \secretkey$. The signature is $ \signature \gets
+(R, s) $.</li>
+<li>$ \verify(m, \vk, \signature) $ takes as input a message $ m $, a verification key $ \vk $ and a signature
+$ \signature $, and returns $ \result \in{\accept, \reject} $ depending on whether the signature is valid or not.
+The algorithm returns $ \accept $ if $ s \cdot \generator = R + c\cdot \vk$</li>
+</ul>
+<h2 id="parameters-of-instantiation-3"><a class="header" href="#parameters-of-instantiation-3">Parameters of instantiation</a></h2>
+<p>The above is the standard definition, and in cardano we instantiate it over curve SECP256k1. Moreover, we follow
+<a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki">BIP-0340</a>. The following are the two specifications
+of the above algorithm required for compatibility. Citing literally BIP-0340:</p>
+<ul>
+<li>We use implicit <code>Y</code> coordinates. We encode an elliptic curve point with 32 bytes, and we implicitly choose the <code>Y</code>
+coordinate that is even[6].</li>
+<li>We use tagged hashed of SHA256 for the challenge computation. More precisely, in order to compute <code>H(R, vk, m)</code>,
+one computes <code>SHA256(SHA256("BIP0340/challenge")||SHA256("BIP0340/challenge") || R || vk || m)</code>.</li>
+</ul>
+<p>More precisely, the following is what is the specification used in the plutus built-in functions:</p>
+<ul>
+<li>The verification key must correspond to the <code>(x, y)</code> coordinates of a point
+on the SECP256k1 curve, where <code>x, y</code> are unsigned integers in big-endian form.</li>
+<li>The verification key must correspond to a result produced by
+<a href="https://github.com/bitcoin-core/secp256k1/blob/master/include/secp256k1_extrakeys.h#L61"><code>secp256k1_xonly_pubkey_serialize</code></a>.
+This implies all of the following:
+<ul>
+<li>The verification key is 32 bytes long.</li>
+<li>The bytes of the signature correspond to the <code>x</code> coordinate.</li>
+</ul>
+</li>
+<li>The input to verify is the message to be checked; this can be of any length,
+and can contain any bytes in any position.</li>
+<li>The signature must correspond to a point <code>R</code> on the SECP256k1 curve, and an
+unsigned integer <code>s</code> in big-endian form.</li>
+<li>The signature must follow the BIP-340 standard for encoding. This implies all the following:
+<ul>
+<li>The signature is 64 bytes long.</li>
+<li>The first 32 bytes are the bytes of the <code>x</code> coordinate of <code>R</code>, as a
+big-endian unsigned integer.</li>
+<li>The last 32 bytes are the bytes of <code>s</code>.</li>
+</ul>
+<pre><code>    ┏━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━┓
+    ┃ R &lt;32 bytes&gt; │ s &lt;32 bytes&gt;  ┃
+    ┗━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━┛
+    &lt;--------- signature ----------&gt;
+</code></pre>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="vrf-ed25519-1"><a class="header" href="#vrf-ed25519-1">VRF-ed25519</a></h1>
+<p>Verifiable Random Functions ($ \vrf $) allow key-pair owners, $ (\vrfsk, \vrfvk) $,
+to evaluate a pseudorandom function in a provable way given a randomness seed.
+Any party with access to the verification key, $\vrfvk$, the
+randomness seed, the proof and the generated randomness can indeed verify
+that the value is computed as expected. The VRF specification has changed
+overtime in Cardano, and the nodes use a different algorith, pre-Babbage and
+post-Babbage (if there exists a reference to the HF, we should point it out).
+We expose both specifications, and the motivations for such a change.</p>
+<h2 id="generalised-specification-4"><a class="header" href="#generalised-specification-4">Generalised specification</a></h2>
+<p>We use an additional hash function to that introduced in the <a href="#notation">Notation</a> section. In particular
+one that maps a binary input to an element of the group $\group$, $\hash_{s2c}: {0,1}^* \to \group$.</p>
+<h2 id="pre-babbage"><a class="header" href="#pre-babbage">Pre Babbage</a></h2>
+<p>A $\vrf$ function, in pre-Babbage eras, is defined by the following three algorithms:</p>
+<ul>
+<li>$\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in <a href="#generalised-specification">ed25519</a>. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key
+$\signingkey$ in the Ed25519 section as $\vrfsk$.</li>
+<li>$\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message
+$m$, and returns the $\vrf$ randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to
+derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as
+defined in procedure $\sign$ as in <a href="#generalised-specification">ed25519</a>. Let $c \gets \hash
+(H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)[..128]$. Compute $s \gets (r +
+c\cdot\vrfsk)\mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, c, s)$ and the randomness
+$\vrfoutput \gets \hash(\texttt{suite_string}\parallelsep 0x03\parallelsep\cofvar\cdot\Gamma\parallelsep
+0x00)$.</li>
+<li>$\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof
+$\vrfproof$, and returns $\vrfoutput$ or $ \false $. It parses the proof as $(\Gamma, c, s) = \vrfproof$, and
+computes $H\gets\hash_{s2c}(\vrfvk, m)$. Let $U \gets s\cdot\generator - c\cdot\vrfvk$ and $V \gets s\cdot
+H - c\cdot\Gamma$. Compute the challenge $c’\gets\hash(H\parallelsep\Gamma\parallelsep U\parallelsep V)[..128]$.
+If $c’=c$, then return $\vrfoutput \gets  \hash(\texttt{suite_string}\parallelsep
+0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return $ \false $.</li>
+</ul>
+<h2 id="post-babbage"><a class="header" href="#post-babbage">Post Babbage</a></h2>
+<p>A $\vrf$ function, in post-Babbage eras, is defined by the following three algorithms:</p>
+<ul>
+<li>$\vrfkeygen(1^\secparam)$ follows the exact same procedure as $\keygen(1^\secparam)$ described in
+<a href="#generalised-specification">ed25519</a>. Output key pair $(\secretkey, \vrfvk)$. We refer to the signing key
+$\signingkey$ in the Ed25519 section as $\vrfsk$.</li>
+<li>$\vrfgenerateproof(\secretkey, \vrfvk, m)$ takes as input a keypair $(\secretkey, \vrfvk)$ and a message
+$m$, and returns the $\vrf$ randomness $\vrfoutput$ together with a proof $\vrfproof$. Use $\secretkey$ to
+derive $\vrfsk$. Let $H \gets \hash_{s2c}(\vrfvk, m)$. Let $\Gamma \gets \vrfsk\cdot H$. Compute $r$ as
+defined in procedure $\sign$ as in <a href="#generalised-specification">ed25519</a>. Let $c \gets \hash
+(H\parallelsep\Gamma\parallelsep k\cdot\generator\parallelsep k\cdot H)$. Compute $s \gets (r + c\cdot\vrfsk)
+\mod\order$. Finally, return the proof $\vrfproof \gets (\Gamma, k\cdot\generator, k\cdot H, s)$ and the
+randomness $\vrfoutput \gets  \hash(\texttt{suite_string}\parallelsep
+0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$.</li>
+<li>$\verify(m, \vrfvk, \vrfproof)$ takes as input a message $m$, a verification key $\vrfvk$ and a vrf proof
+$\vrfproof$, and returns $\vrfoutput$ or $ \false $. It parses the proof as $(\Gamma, U, V, s) = \vrfproof$,
+and computes $H\gets\hash_{s2c}(\vrfvk, m)$. Next, compute $c \gets \hash(H\parallelsep\Gamma\parallelsep
+k\cdot\generator\parallelsep k\cdot H)[..128]$. Finally, if $U = s\cdot\generator - c\cdot\vrfvk$ and $V = s\cdot
+H - c\cdot\Gamma$, then return $\vrfoutput =  \hash(\texttt{suite_string}\parallelsep
+0x03\parallelsep\cofvar\cdot\Gamma\parallelsep 0x00)$, otherwise, return $ \false $.</li>
+</ul>
+<p>This change allows for batch verification of proofs, which achieve up to a times two improvement in verification
+time, in exchange of a larger proof.</p>
+<h2 id="parameters-of-instantiation-4"><a class="header" href="#parameters-of-instantiation-4">Parameters of instantiation</a></h2>
+<p>Some of the concrete parameter instantiations also differ between pre-Babbage and post-Babbage eras. We begin by
+describing those which coincide, and follow with a separate description for the ones that differ.</p>
+<ul>
+<li><strong>Parameter $\ell(\kappa)$ and suite $\texttt{suite_string}$:</strong> We set $\ell(\kappa)=512$. We choose the
+suite $ \texttt{ECVRF_EDWARDS25519_SHA512_ELL2} $, as defined in the standard draft<sup class="footnote-reference" id="fr-vrf15-1"><a href="#footnote-vrf15">1</a></sup>. This
+sets the parameter $\texttt{suite_string}$ as $0x04$ and the following parameters.</li>
+<li><strong>Curve:</strong> We define the curve, and by consequence the finite prime order field, security parameter, cofactor,
+prime order subgroup and generator, as described in the ed25519 paper<sup class="footnote-reference" id="fr-ed25519-1-1"><a href="#footnote-ed25519-1">2</a></sup>. In particular, we use Edwards25519
+which is birationally equivalent to Curve25519.</li>
+<li><strong>Hash:</strong> As a hashing algorithm we use SHA512.</li>
+</ul>
+<h2 id="pre-babbage-1"><a class="header" href="#pre-babbage-1">Pre Babbage</a></h2>
+<p>We proceed with the specifications on pre-Babbage eras.</p>
+<ul>
+<li><strong>Draft version:</strong> pre-Babbage eras are build on top of Version 03 of the standards draft<sup class="footnote-reference" id="fr-vrf03-1"><a href="#footnote-vrf03">3</a></sup>.</li>
+<li><strong>Deserialization:</strong> A $ \vrf $ proof is represented by 80 bytes: the first 32 bytes, $b_{[..32]}$, represent the
+point $\Gamma$, the following 16 bytes, $b_{[32..48]}$, represent the scalar $c$, and the final 32 bytes,
+$b_{[48..]}$, represent the scalar $s$. A public key is also represented as 32 bytes, $b_{pk}$.
+Deserialization is valid only if:
+<ul>
+<li>$b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.</li>
+<li>$b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
+$\cofvar$, and when read as a little-endian integer, it is smaller than $p$.</li>
+</ul>
+</li>
+<li><strong>Hash to curve $\hash_{s2c}$:</strong> Elligator mapping, over a scalar computed by
+hashing $\texttt{suite_string}\parallelsep 0x01\parallelsep \vrfvk \parallelsep m$. The
+mechanism is described in
+Section~5.4.1.2 of version 3 of the draft. Note that for
+implementing the mechanism as described in the draft, the sign bit is cleared before calling
+the elligator function, meaning that the latter always works with sign = 0 (see <a href="https://github.com/input-output-hk/libsodium/blob/tdammers/rebased-vrf/src/libsodium/crypto_vrf/ietfdraft03/convert.c#L84">$ \texttt{_vrf_ietfdraft03_hash_to_curve_elligator2_25519} $</a>
+function). See Appendix A.4 of
+version 3 of the draft for test vectors.</li>
+</ul>
+<h2 id="post-babbage-1"><a class="header" href="#post-babbage-1">Post Babbage</a></h2>
+<p>We finalize with the specifications of post-Babbage eras.</p>
+<ul>
+<li><strong>Draft version:</strong> post-Babbage eras are build on top of a batch-compatible version of Version 10 of the
+standards draft[^vrf10]. The specific construction is described in
+the technical spec studying the security of batch compatibility<sup class="footnote-reference" id="fr-vrf-bc-1"><a href="#footnote-vrf-bc">4</a></sup>.</li>
+<li><strong>Deserialization:</strong> A $ \vrf $ proof is represented by 128 bytes: the first 32 bytes, $b_{[..32]}$, represent the
+point $\Gamma$, the following 32 bytes, $b_{[32..64]}$, represent the point $U$, the following 32 bytes,
+$b_{[64..96]}$, represent the point $V$, and the final 32 bytes, $b_{[96..]}$, represent the scalar $s$. A
+public key is also represented as 32 bytes, $b_{pk}$. Deserialization is valid only if:
+<ul>
+<li>$b_{[..32]}$ when read as a little-endian integer, it is smaller than $p$.</li>
+<li>$b_{[96..]}$ when read as a little-endian integer, is smaller than $\order$.</li>
+<li>$b_{pk}$ does not represent a low order point (by checking against a precomputed blacklist of size
+$\cofvar$, and when read as a little-endian integer, it is smaller than $p$.</li>
+</ul>
+</li>
+<li><strong>Hash to curve $\hash_{s2c}$:</strong> Hash to curve algorithm
+as defined in the hash to curve standard<sup class="footnote-reference" id="fr-h2c-1"><a href="#footnote-h2c">5</a></sup>, version 12, Section 6.8.2 (non uniform version). For test
+vectors, one can use those presented in Appendix J.5.2 of that same document. Reference
+implementation can be found in the <a href="https://github.com/input-output-hk/libsodium/blob/iquerejeta/ECVRF-EDWARDS25519-SHA512-TAI/src/libsodium/crypto_vrf/ietfdraft10/convert.c#L88">libsodium fork</a>.</li>
+</ul>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-vrf15">
+<p>Goldberg, Reyzin, Papadopoulos and Včelák, <em>Verifiable Random Functions (VRFs); version 15</em> <a href="#fr-vrf15-1">↩</a></p>
+</li>
+<li id="footnote-ed25519-1">
+<p>Bernstein, Duif, Lange, Schwabe and Yang, <em>High-Speed High-Security Signatures</em> <a href="#fr-ed25519-1-1">↩</a></p>
+</li>
+<li id="footnote-vrf03">
+<p>Goldberg, Reyzin, Papadopoulos and Včelák, <em>Verifiable Random Functions (VRFs); version 03</em> <a href="#fr-vrf03-1">↩</a></p>
+</li>
+<li id="footnote-vrf-bc">
+<p>Badertscher, Gazi, Querejeta-Azurmendi and Russell, <em>On UC-Secure Range Extension and Batch Verification for ECVRF</em> <a href="#fr-vrf-bc-1">↩</a></p>
+</li>
+<li id="footnote-h2c">
+<p>Faz-Hernández, Scott, Sullivan, Wahby and Wood, <em>Hashing to Elliptic Curves</em> <a href="#fr-h2c-1">↩</a></p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
