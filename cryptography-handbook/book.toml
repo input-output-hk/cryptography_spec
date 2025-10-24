@@ -7,8 +7,8 @@ title = "IOG Cryptography Handbook"
 [output.html]
 mathjax-support = true
 
-[preprocessor.katex]
-macros = "./macros.txt"
+# [preprocessor.katex]
+# macros = "./macros.txt"
 
 #[preprocessor.graphviz]
 #command = "mdbook-graphviz"
